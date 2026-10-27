@@ -1726,6 +1726,29 @@ footer div {
   font-weight: 500;
 }
 
+.footer-right {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.footer-dev-credit {
+  font-style: italic;
+  color: #E6C265;
+  opacity: 0.72;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.25px;
+  margin-top: 2px;
+  transition: opacity .2s ease;
+}
+
+.footer-dev-credit:hover {
+  opacity: 1;
+}
+
 footer a:hover {
   color: var(--green);
 }
@@ -1857,6 +1880,10 @@ footer a:hover {
     flex-direction: column;
     text-align: center;
     gap: 20px;
+  }
+  .footer-right {
+    align-items: center;
+    text-align: center;
   }
 }
 
@@ -2855,8 +2882,13 @@ footer a:hover {
     <a href="https://wa.link/9mwhgp">+994 51 448 68 20</a>
     <a href="mailto:hello@gateacademy.study">hello@gateacademy.study</a>
   </div>
-  <div style="font-weight:900;font-size:20px;letter-spacing:-.02em" data-i18n="footerSlogan">
-    Yaradıcılığa qapı aç.
+  <div class="footer-right">
+    <div style="font-weight:900;font-size:20px;letter-spacing:-.02em" data-i18n="footerSlogan">
+      Yaradıcılığa qapı aç.
+    </div>
+    <div class="footer-dev-credit">
+      Mustafa Onur Çakal tarafından geliştirildi.
+    </div>
   </div>
 </footer>
 
