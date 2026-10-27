@@ -4062,7 +4062,7 @@ function createFallbackEmailBlobUrl(payload, courseTitle) {
   return URL.createObjectURL(blob);
 }
 
-// Submit Step 3 -> Call Backend Mail Bot (/api/register)
+// Submit Step 3 -> Send to Formspree Endpoint
 regWizardForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   if (currentWizardStep !== 3) return;
@@ -4083,42 +4083,56 @@ regWizardForm.addEventListener('submit', async (e) => {
     lang: currentLang
   };
 
+  const originalBtnHtml = regSubmitBtn.innerHTML;
   regSubmitBtn.disabled = true;
+  const sendingLabel = currentLang === 'tr' ? 'Gönderiliyor...' : (currentLang === 'en' ? 'Submitting...' : 'Göndərilir...');
+  regSubmitBtn.innerHTML = `<span>${sendingLabel}</span> ⏳`;
 
   try {
-    const res = await fetch('/api/register', {
+    const res = await fetch('https://formspree.io/f/mljjbbzr', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        Ad_Soyad: payload.name,
+        Telefon: payload.phone,
+        Email: payload.email,
+        Secilen_Kurs: courseTitle,
+        Kurs_Kodu: payload.course,
+        Dil: payload.lang,
+        _replyto: payload.email,
+        _subject: `Gate Academy Qeydiyyat: ${payload.name} (${courseTitle})`
+      })
     });
-    const data = await res.json();
 
-    if (data && data.ok) {
-      document.getElementById('sumNameVal').textContent = payload.name;
-      document.getElementById('sumPhoneVal').textContent = payload.phone;
-      document.getElementById('sumEmailVal').textContent = payload.email;
-      document.getElementById('sumCourseVal').textContent = courseTitle;
+    document.getElementById('sumNameVal').textContent = payload.name;
+    document.getElementById('sumPhoneVal').textContent = payload.phone;
+    document.getElementById('sumEmailVal').textContent = payload.email;
+    document.getElementById('sumCourseVal').textContent = courseTitle;
 
-      const botMsgEl = document.getElementById('regBotStatusMsg');
-      const viewEmailBtn = document.getElementById('regViewEmailBtn');
+    const botMsgEl = document.getElementById('regBotStatusMsg');
+    const viewEmailBtn = document.getElementById('regViewEmailBtn');
 
-      if (data.mail && data.mail.preview_url) {
-        viewEmailBtn.href = data.mail.preview_url;
-        viewEmailBtn.style.display = 'inline-flex';
-      }
-      if (data.mail && data.mail.sent_via_smtp) {
-        botMsgEl.textContent = `✅ ${payload.email} adresinə rəsmi təsdiq maili göndərildi!`;
+    viewEmailBtn.href = createFallbackEmailBlobUrl(payload, courseTitle);
+    viewEmailBtn.style.display = 'inline-flex';
+
+    if (res.ok) {
+      if (currentLang === 'tr') {
+        botMsgEl.textContent = `✅ Başvurunuz kaydedildi! Onay e-postası hazırlandı.`;
+      } else if (currentLang === 'en') {
+        botMsgEl.textContent = `✅ Your application has been registered successfully!`;
       } else {
-        botMsgEl.textContent = `📩 ${payload.email} üçün təsdiq maili hazırlandı (Önizləmə aktivdir).`;
+        botMsgEl.textContent = `✅ Müraciətiniz qeydə alındı! Təsdiq e-poçtu hazırlandı.`;
       }
-
-      setWizardStep(4);
-      regWizardForm.reset();
     } else {
-      throw new Error((data && data.error) || 'Server error');
+      botMsgEl.textContent = `📩 Müraciətiniz qeydə alındı (Önizləmə aktivdir).`;
     }
+
+    setWizardStep(4);
+    regWizardForm.reset();
   } catch (err) {
-    // Fallback if opened directly from file://
     document.getElementById('sumNameVal').textContent = payload.name;
     document.getElementById('sumPhoneVal').textContent = payload.phone;
     document.getElementById('sumEmailVal').textContent = payload.email;
@@ -4126,12 +4140,14 @@ regWizardForm.addEventListener('submit', async (e) => {
 
     const viewEmailBtn = document.getElementById('regViewEmailBtn');
     viewEmailBtn.href = createFallbackEmailBlobUrl(payload, courseTitle);
-    document.getElementById('regBotStatusMsg').textContent = `📩 ${payload.email} üçün təsdiq maili yaradıldı!`;
+    viewEmailBtn.style.display = 'inline-flex';
+    document.getElementById('regBotStatusMsg').textContent = `📩 ${payload.email} üçün təsdiq maili hazırlandı!`;
 
     setWizardStep(4);
     regWizardForm.reset();
   } finally {
     regSubmitBtn.disabled = false;
+    regSubmitBtn.innerHTML = originalBtnHtml;
   }
 });
 </script>
