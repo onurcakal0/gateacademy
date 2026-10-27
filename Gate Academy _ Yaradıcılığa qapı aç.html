@@ -485,6 +485,7 @@ h1, h2, h3, h4 {
   box-shadow: 0 0 8px rgba(255, 69, 0, 0.4);
 }
 .ad-badge.ad-fg { color: var(--figma); border-color: rgba(10, 207, 131, 0.7); box-shadow: 0 0 8px rgba(10, 207, 131, 0.3); }
+.ad-badge.ad-xd { color: #FF61F6; border-color: rgba(255, 97, 246, 0.7); box-shadow: 0 0 8px rgba(255, 97, 246, 0.3); }
 
 h1 {
   font-size: 10vw;
@@ -1413,159 +1414,450 @@ section {
 }
 
 /* =====================================================================
-   MENTOR / INSTRUCTOR SPOTLIGHT SECTION
+   MENTOR SPOTLIGHT SECTION (3 MENTORS GRID + POPUP WINDOW)
    ===================================================================== */
 .mentor-section {
   margin-top: clamp(64px, 10vw, 120px);
 }
 
-.mentor-card {
-  background: var(--paper);
-  border-radius: 36px;
-  padding: clamp(28px, 4.5vw, 56px);
-  border: 1px solid var(--border);
+.mentors-grid {
   display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 40px;
-  align-items: center;
-  box-shadow: var(--card-shadow);
-  margin-top: 36px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-top: 40px;
 }
 
-.mentor-visual {
+.mentor-grid-card {
+  background: var(--paper);
+  border-radius: 32px;
+  padding: 36px 24px 28px;
+  border: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  text-align: center;
+  box-shadow: var(--card-shadow);
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+  user-select: none;
 }
 
-.mentor-avatar {
-  width: 220px;
-  height: 220px;
+.mentor-grid-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--blue), var(--green));
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.mentor-grid-card:hover,
+.mentor-grid-card:focus-visible {
+  transform: translateY(-8px);
+  border-color: var(--blue);
+  box-shadow: 0 24px 60px rgba(30, 69, 252, 0.2);
+}
+
+:root[data-theme="dark"] .mentor-grid-card:hover,
+:root[data-theme="dark"] .mentor-grid-card:focus-visible {
+  border-color: var(--green);
+  box-shadow: 0 24px 60px rgba(43, 255, 57, 0.18);
+}
+
+.mentor-grid-card:hover::before,
+.mentor-grid-card:focus-visible::before {
+  opacity: 1;
+}
+
+.mentor-avatar-wrap {
+  width: 190px;
+  height: 190px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--blue), var(--green));
-  padding: 6px;
-  box-shadow: 0 16px 36px rgba(30, 69, 252, 0.25);
+  padding: 5px;
+  box-shadow: 0 14px 32px rgba(30, 69, 252, 0.22);
   position: relative;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s ease;
 }
 
-.avatar-inner {
+.mentor-grid-card:hover .mentor-avatar-wrap,
+.mentor-grid-card:focus-visible .mentor-avatar-wrap {
+  transform: scale(1.04);
+  box-shadow: 0 18px 40px rgba(43, 255, 57, 0.38);
+}
+
+.mentor-avatar-wrap .avatar-inner {
   width: 100%;
   height: 100%;
   border-radius: 50%;
   background: var(--navy);
-  color: #fff;
-  display: grid;
-  place-items: center;
-  font-size: 56px;
-  font-weight: 900;
   overflow: hidden;
   position: relative;
 }
 
-.avatar-inner svg {
-  width: 75%;
-  height: 75%;
-  fill: var(--green);
+.mentor-avatar-wrap .avatar-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 18%;
+  display: block;
+  filter: grayscale(100%) contrast(1.08);
+  opacity: 0.9;
+  transition: filter 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
 }
 
-.mentor-verified {
+.mentor-grid-card:hover .avatar-inner img,
+.mentor-grid-card:focus-visible .avatar-inner img {
+  filter: grayscale(0%) contrast(1);
+  opacity: 1;
+  transform: scale(1.08);
+}
+
+.mentor-avatar-wrap .mentor-verified {
   position: absolute;
-  bottom: 10px;
-  right: 14px;
+  bottom: 6px;
+  right: 8px;
   background: var(--green);
   color: var(--navy);
-  width: 44px;
-  height: 44px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   display: grid;
   place-items: center;
   border: 3px solid var(--sheet);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
 }
 
-.mentor-content {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.mentor-label {
-  font-size: 13px;
+.mentor-badge-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
   font-weight: 900;
-  letter-spacing: .06em;
+  letter-spacing: .08em;
   text-transform: uppercase;
   color: var(--blue);
+  background: rgba(30, 69, 252, 0.08);
+  padding: 5px 12px;
+  border-radius: 100px;
+  margin-top: 18px;
 }
 
-:root[data-theme="dark"] .mentor-label {
+:root[data-theme="dark"] .mentor-badge-chip {
   color: var(--green);
+  background: rgba(43, 255, 57, 0.12);
 }
 
-.mentor-content h3 {
-  font-size: clamp(28px, 3.5vw, 44px);
-  line-height: 1;
+.mentor-card-name {
+  font-size: 24px;
+  font-weight: 900;
   color: var(--text);
+  margin: 10px 0 4px;
+  line-height: 1.15;
 }
 
-.mentor-role {
-  font-size: 17px;
+.mentor-card-role {
+  font-size: 15px;
   font-weight: 700;
   color: var(--text-muted);
-  margin-top: -6px;
+  margin-bottom: 12px;
 }
 
-.mentor-content p {
-  font-size: 16px;
+.mentor-card-stats {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text);
+  background: var(--sheet);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 6px 14px;
+  margin-bottom: 16px;
+  width: fit-content;
+}
+
+.mentor-card-stats .stat-sep {
+  color: var(--green);
+  font-weight: 900;
+}
+
+.mentor-card-tools {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.btn-mentor-more {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 800;
+  border-radius: 100px;
+  background: transparent;
+  color: var(--text);
+  border: 1.5px solid var(--border);
+  transition: all 0.3s ease;
+  margin-top: auto;
+}
+
+.mentor-grid-card:hover .btn-mentor-more,
+.mentor-grid-card:focus-visible .btn-mentor-more {
+  background: var(--blue);
+  color: #fff;
+  border-color: var(--blue);
+}
+
+:root[data-theme="dark"] .mentor-grid-card:hover .btn-mentor-more,
+:root[data-theme="dark"] .mentor-grid-card:focus-visible .btn-mentor-more {
+  background: var(--green);
+  color: var(--navy);
+  border-color: var(--green);
+}
+
+/* =====================================================================
+   MENTOR DETAIL MODAL WINDOW
+   ===================================================================== */
+.mentor-modal-card {
+  max-width: 720px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.mentor-modal-tabs {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+.mentor-modal-tabs::-webkit-scrollbar { display: none; }
+
+.mentor-tab-btn {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 6px 14px;
+  border-radius: 100px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.25s ease;
+}
+
+.mentor-tab-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.mentor-tab-btn.is-active {
+  background: var(--green);
+  color: var(--navy);
+  border-color: var(--green);
+}
+
+.mentor-modal-body {
+  padding: 24px 28px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.mentor-modal-hero {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-bottom: 20px;
+}
+
+.mentor-modal-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue), var(--green));
+  padding: 4px;
+  flex-shrink: 0;
+  box-shadow: 0 10px 24px rgba(30, 69, 252, 0.3);
+  position: relative;
+}
+
+.mentor-modal-avatar .avatar-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--navy);
+}
+
+.mentor-modal-avatar .avatar-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 18%;
+  filter: grayscale(0%);
+}
+
+.mentor-modal-avatar .mentor-verified {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  background: var(--green);
+  color: var(--navy);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--sheet);
+}
+
+.mentor-modal-intro h3 {
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--text);
+  line-height: 1.15;
+  margin: 0 0 4px;
+}
+
+.mentor-modal-role {
+  font-size: 15px;
+  font-weight: 700;
   color: var(--text-muted);
-  line-height: 1.55;
-  margin: 0;
+  margin-bottom: 8px;
 }
 
-.mentor-quote {
+.mentor-modal-quote {
   background: var(--sheet);
   border-left: 4px solid var(--green);
-  padding: 14px 20px;
-  border-radius: 0 16px 16px 0;
+  padding: 12px 16px;
+  border-radius: 0 14px 14px 0;
   font-style: italic;
-  font-size: 15px;
+  font-size: 14.5px;
   color: var(--text);
   border-top: 1px solid var(--border);
   border-right: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
+  margin-bottom: 18px;
+  line-height: 1.5;
 }
 
-.mentor-stats-row {
+.mentor-modal-bio {
+  font-size: 14.5px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.mentor-modal-stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-  margin-top: 10px;
+  gap: 10px;
+  margin-bottom: 22px;
 }
 
-.m-stat {
+.mentor-modal-stat-card {
   background: var(--sheet);
-  padding: 12px 14px;
-  border-radius: 18px;
   border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 10px 12px;
   text-align: center;
 }
 
-.m-stat strong {
+.mentor-modal-stat-card strong {
   display: block;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 900;
   color: var(--blue);
   line-height: 1.1;
 }
 
-:root[data-theme="dark"] .m-stat strong {
+:root[data-theme="dark"] .mentor-modal-stat-card strong {
   color: var(--green);
 }
 
-.m-stat small {
-  font-size: 12px;
+.mentor-modal-stat-card small {
+  font-size: 11px;
   font-weight: 700;
   color: var(--text-muted);
+}
+
+.mentor-modal-tools-sec {
+  background: var(--sheet);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 16px 18px;
+  margin-bottom: 6px;
+}
+
+.mentor-modal-tools-title {
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mentor-modal-tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.mentor-tool-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--paper);
+  border: 1px solid var(--border);
+}
+
+.mentor-tool-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.mentor-tool-name {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.mentor-tool-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.2;
+}
+
+.mentor-modal-footer {
+  padding: 16px 28px 22px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  background: var(--paper);
 }
 
 /* =====================================================================
@@ -1765,15 +2057,31 @@ footer a:hover {
   .ai-pipeline {
     grid-template-columns: repeat(2, 1fr);
   }
-  .mentor-card {
+  .mentors-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .mentor-modal-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .mentors-grid {
     grid-template-columns: 1fr;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .mentor-modal-hero {
+    flex-direction: column;
     text-align: center;
   }
-  .mentor-visual {
-    margin: 0 auto;
+  .mentor-modal-footer {
+    flex-direction: column;
   }
-  .mentor-stats-row {
-    grid-template-columns: repeat(2, 1fr);
+  .mentor-modal-footer .btn {
+    width: 100%;
+    text-align: center;
   }
 }
 
@@ -2774,58 +3082,114 @@ footer a:hover {
 
   <!-- ================= INSTRUCTOR / MENTOR SPOTLIGHT ================= -->
   <section id="mentorlar" class="mentor-section">
-    <h2 class="big rv" data-i18n="mentorHeading">Müəllim yox, Sənayedə İşləyən Mentorlar</h2>
-    <p class="section-subhead rv" data-i18n="mentorSubhead">Bizdə dərsləri nəzəriyyəçilər deyil, bu gün real bazarda aparıcı agentlik və şirkətlərlə işləyən kreativ rəhbərlər keçir.</p>
+    <h2 class="big rv" data-i18n="mentorHeading">Öğretmen Değil, Sektörde Üreten Mentorlar</h2>
+    <p class="section-subhead rv" data-i18n="mentorSubhead">Bizdə dərsləri nəzəriyyəçilər deyil, bu gün real bazarda aparıcı şirkətlərlə çalışan və kommersiya məhsulları yaradan ekspertlər keçir.</p>
 
-    <div class="mentor-card rv">
-      <div class="mentor-visual">
-        <div class="mentor-avatar">
+    <div class="mentors-grid rv">
+      <!-- MENTOR 1: Rüfət Qədirli (Solda / UI-UX) -->
+      <article class="mentor-grid-card" data-mentor="rufat" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Rüfət Qədirli - Detallı Profil">
+        <div class="mentor-avatar-wrap">
           <div class="avatar-inner">
-            <img src="ulvi_quluzade.png" alt="Ülvi Quluzadə" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:50%;display:block;">
+            <img src="rufat_qadirli.png" alt="Rüfət Qədirli" loading="lazy">
           </div>
-          <div class="mentor-verified" title="Adobe Certified Expert">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <div class="mentor-verified" title="Verified Expert">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
-        </div>
-        <div class="hero-software-icons">
-          <span class="ad-badge ad-ps">Ps</span>
-          <span class="ad-badge ad-ai">Ai</span>
-          <span class="ad-badge ad-id">Id</span>
-          <span class="ad-badge ad-ae">Ae</span>
-          <span class="ad-badge ad-pr">Pr</span>
-          <span class="ad-badge ad-ff">Ff</span>
-        </div>
-      </div>
-
-      <div class="mentor-content">
-        <span class="mentor-label" data-i18n="mentorBadge">✦ Adobe Certified Expert</span>
-        <h3 data-i18n="mentorName">Ülvi Quluzadə</h3>
-        <div class="mentor-role" data-i18n="mentorRole">İcraçı direktor və yaradıcı</div>
-        <p data-i18n="mentorBio">Beynəlxalq və yerli layihələrdə, korporativ brendinqlər sahəsində 7 illik təcrübəyə sahib, süni intellekt adaptasiyalı təhsil proqramının yaradıcısı.</p>
-
-        <div class="mentor-quote" data-i18n="mentorQuote">
-          &ldquo;Məqsədimiz tələbələrə sadəcə standart dizaynı öyrətmək yox, həm də dövrün tələblərinə uyğun süni intellekt əsaslı müxtəlif alətləri və yaradıcı dizayner kimi düşünməyi öyrətməkdir.&rdquo;
         </div>
 
-        <div class="mentor-stats-row">
-          <div class="m-stat">
-            <strong data-i18n="mStat1Val">7+ il</strong>
-            <small data-i18n="mStat1Lbl">Təcrübə</small>
+        <span class="mentor-badge-chip" data-i18n="rufatBadge">✦ UI/UX &amp; PRODUCT DESIGN LEAD</span>
+        <h3 class="mentor-card-name" data-i18n="rufatName">Rüfət Qədirli</h3>
+        <div class="mentor-card-role" data-i18n="rufatRole">UI/UX üzrə ekspert</div>
+
+        <div class="mentor-card-stats">
+          <span data-i18n="rufatStatExp">6+ il təcrübə</span>
+          <span class="stat-sep">•</span>
+          <span data-i18n="rufatStatProj">124 layihə</span>
+        </div>
+
+        <div class="mentor-card-tools" aria-label="Proqramlar">
+          <span class="ad-badge ad-fg" title="Figma">Fg</span>
+          <span class="ad-badge ad-xd" title="Adobe XD">Xd</span>
+          <span class="ad-badge ad-ps" title="Adobe Photoshop">Ps</span>
+          <span class="ad-badge ad-ai" title="Adobe Illustrator">Ai</span>
+          <span class="ad-badge ad-hf" title="Higgsfield / AI Tools">Hf</span>
+        </div>
+
+        <button type="button" class="btn-mentor-more" data-i18n="btnMentorDetail">
+          <span>Detallı Profil &amp; Proqramlar</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </button>
+      </article>
+
+      <!-- MENTOR 2: Səma Məsimli (Ortada / Qrafik Dizayn) -->
+      <article class="mentor-grid-card" data-mentor="sema" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Səma Məsimli - Detallı Profil">
+        <div class="mentor-avatar-wrap">
+          <div class="avatar-inner">
+            <img src="sema_masimli.png" alt="Səma Məsimli" loading="lazy">
           </div>
-          <div class="m-stat">
-            <strong data-i18n="mStat2Val">40+</strong>
-            <small data-i18n="mStat2Lbl">Layihə</small>
-          </div>
-          <div class="m-stat">
-            <strong data-i18n="mStat3Val">95%</strong>
-            <small data-i18n="mStat3Lbl">Uğurlu frilans iş</small>
-          </div>
-          <div class="m-stat">
-            <strong data-i18n="mStat4Val">Top 5%</strong>
-            <small data-i18n="mStat4Lbl">Sənaye reytinqi</small>
+          <div class="mentor-verified" title="Verified Expert">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
         </div>
-      </div>
+
+        <span class="mentor-badge-chip" data-i18n="semaBadge">✦ BRAND IDENTITY &amp; VISUAL LEAD</span>
+        <h3 class="mentor-card-name" data-i18n="semaName">Səma Məsimli</h3>
+        <div class="mentor-card-role" data-i18n="semaRole">Qrafik Dizayn üzrə ekspert</div>
+
+        <div class="mentor-card-stats">
+          <span data-i18n="semaStatExp">3+ il təcrübə</span>
+          <span class="stat-sep">•</span>
+          <span data-i18n="semaStatProj">50+ layihə</span>
+        </div>
+
+        <div class="mentor-card-tools" aria-label="Proqramlar">
+          <span class="ad-badge ad-ps" title="Adobe Photoshop">Ps</span>
+          <span class="ad-badge ad-ai" title="Adobe Illustrator">Ai</span>
+          <span class="ad-badge ad-id" title="Adobe InDesign">Id</span>
+          <span class="ad-badge ad-ff" title="Adobe Firefly">Ff</span>
+          <span class="ad-badge ad-hf" title="Higgsfield AI">Hf</span>
+        </div>
+
+        <button type="button" class="btn-mentor-more" data-i18n="btnMentorDetail">
+          <span>Detallı Profil &amp; Proqramlar</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </button>
+      </article>
+
+      <!-- MENTOR 3: Nicat Mehdi (Sağda / 2D Motion) -->
+      <article class="mentor-grid-card" data-mentor="nicat" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Nicat Mehdi - Detallı Profil">
+        <div class="mentor-avatar-wrap">
+          <div class="avatar-inner">
+            <img src="nicat_mehdi.png" alt="Nicat Mehdi" loading="lazy">
+          </div>
+          <div class="mentor-verified" title="Verified Expert">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+
+        <span class="mentor-badge-chip" data-i18n="nicatBadge">✦ 2D MOTION &amp; ANIMATION DIRECTOR</span>
+        <h3 class="mentor-card-name" data-i18n="nicatName">Nicat Mehdi</h3>
+        <div class="mentor-card-role" data-i18n="nicatRole">2D Motion Dizayn üzrə ekspert</div>
+
+        <div class="mentor-card-stats">
+          <span data-i18n="nicatStatExp">7+ il təcrübə</span>
+          <span class="stat-sep">•</span>
+          <span data-i18n="nicatStatProj">150 layihə</span>
+        </div>
+
+        <div class="mentor-card-tools" aria-label="Proqramlar">
+          <span class="ad-badge ad-ae" title="Adobe After Effects">Ae</span>
+          <span class="ad-badge ad-pr" title="Adobe Premiere Pro">Pr</span>
+          <span class="ad-badge ad-ai" title="Adobe Illustrator">Ai</span>
+          <span class="ad-badge ad-hf" title="Higgsfield AI">Hf</span>
+          <span class="ad-badge ad-ff" title="Motion AI">✦</span>
+        </div>
+
+        <button type="button" class="btn-mentor-more" data-i18n="btnMentorDetail">
+          <span>Detallı Profil &amp; Proqramlar</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </button>
+      </article>
     </div>
   </section>
 
@@ -3128,6 +3492,36 @@ footer a:hover {
   </div>
 </div>
 
+<!-- ================= INTERACTIVE MENTOR PROFILE MODAL ================= -->
+<div class="reg-modal-overlay" id="mentorModal" role="dialog" aria-modal="true" aria-labelledby="mentorModalName">
+  <div class="reg-modal-card mentor-modal-card">
+    <div class="reg-modal-top">
+      <div class="reg-top-row">
+        <span class="reg-brand-pill">
+          <span class="pulse-dot"></span>
+          <span data-i18n="mentorModalTopBadge">GATE ACADEMY • MENTOR PROFİLİ</span>
+        </span>
+        <button type="button" class="reg-close-btn" id="mentorModalCloseBtn" aria-label="Bağla">&times;</button>
+      </div>
+
+      <div class="mentor-modal-tabs" role="tablist" aria-label="Mentor Seçimi">
+        <button type="button" class="mentor-tab-btn is-active" data-tab-mentor="rufat">Rüfət Qədirli</button>
+        <button type="button" class="mentor-tab-btn" data-tab-mentor="sema">Səma Məsimli</button>
+        <button type="button" class="mentor-tab-btn" data-tab-mentor="nicat">Nicat Mehdi</button>
+      </div>
+    </div>
+
+    <div class="mentor-modal-body" id="mentorModalBody">
+      <!-- Populated dynamically by JS -->
+    </div>
+
+    <div class="mentor-modal-footer">
+      <button type="button" class="btn go" id="mentorModalEnrollBtn" data-i18n="mentorBtnEnroll">Bu Mentorun Kursuna Qeydiyyat</button>
+      <a class="btn outline" id="mentorModalWaBtn" href="https://wa.link/9mwhgp" target="_blank" rel="noopener" data-i18n="btnAskWhatsapp">WhatsApp ilə sual ver</a>
+    </div>
+  </div>
+</div>
+
 <!-- ================= EMAILJS SDK & VANILLA JS ENGINE ================= -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
@@ -3204,21 +3598,27 @@ const i18nData = {
     pawsyBadge: "✦ Qrafik Dizayn Final Layihəsi",
     pawsyTitle: "Pawsy • Eko Brend Kimliyi",
     pawsyDesc: "Ev heyvanları üçün eko-məhsul brendinin sıfırdan loqosu, qablaşdırma seriyası, tipoqrafik sistemi və vizual kimliyi. Təlim müddətində hazırlanan layihə birbaşa beynəlxalq standartlı portfolioya daxil edildi.",
-    mentorHeading: "Müəllim yox, Sənayedə İşləyən Mentorlar",
-    mentorSubhead: "Bizdə dərsləri nəzəriyyəçilər deyil, bu gün real bazarda aparıcı agentlik və şirkətlərlə işləyən kreativ rəhbərlər keçir.",
-    mentorBadge: "✦ Adobe Certified Expert",
-    mentorName: "Ülvi Quluzadə",
-    mentorRole: "İcraçı direktor və yaradıcı",
-    mentorBio: "Beynəlxalq və yerli layihələrdə, korporativ brendinqlər sahəsində 7 illik təcrübəyə sahib, süni intellekt adaptasiyalı təhsil proqramının yaradıcısı.",
-    mentorQuote: "“Məqsədimiz tələbələrə sadəcə standart dizaynı öyrətmək yox, həm də dövrün tələblərinə uyğun süni intellekt əsaslı müxtəlif alətləri və yaradıcı dizayner kimi düşünməyi öyrətməkdir.”",
-    mStat1Val: "7+ il",
-    mStat1Lbl: "Təcrübə",
-    mStat2Val: "40+",
-    mStat2Lbl: "Layihə",
-    mStat3Val: "95%",
-    mStat3Lbl: "Uğurlu frilans iş",
-    mStat4Val: "Top 5%",
-    mStat4Lbl: "Sənaye reytinqi",
+    mentorHeading: "Öğretmen Değil, Sektörde Üreten Mentorlar",
+    mentorSubhead: "Bizdə dərsləri nəzəriyyəçilər deyil, bu gün real bazarda aparıcı şirkətlərlə çalışan və kommersiya məhsulları yaradan ekspertlər keçir.",
+    rufatBadge: "✦ UI/UX &amp; PRODUCT DESIGN LEAD",
+    rufatName: "Rüfət Qədirli",
+    rufatRole: "UI/UX üzrə ekspert",
+    rufatStatExp: "6+ il təcrübə",
+    rufatStatProj: "124 layihə",
+    semaBadge: "✦ BRAND IDENTITY &amp; VISUAL LEAD",
+    semaName: "Səma Məsimli",
+    semaRole: "Qrafik Dizayn üzrə ekspert",
+    semaStatExp: "3+ il təcrübə",
+    semaStatProj: "50+ layihə",
+    nicatBadge: "✦ 2D MOTION &amp; ANIMATION DIRECTOR",
+    nicatName: "Nicat Mehdi",
+    nicatRole: "2D Motion Dizayn üzrə ekspert",
+    nicatStatExp: "7+ il təcrübə",
+    nicatStatProj: "150 layihə",
+    btnMentorDetail: "Detallı Profil &amp; Proqramlar ↗",
+    mentorModalTopBadge: "GATE ACADEMY • MENTOR PROFİLİ",
+    mentorToolsHeading: "İSTİFADƏ ETDİYİ PEŞƏKAR PROQRAMLAR",
+    mentorBtnEnroll: "Bu Mentorun Kursuna Qeydiyyat",
     faqHeading: "Sualların var?",
     faqQ1: "Dizayn bilməsəm də başlaya bilərəm?",
     faqA1: "Bəli. Proqramlar tam sıfırdan başlayır. Əvvəlki dizayn təcrübəsi tələb olunmur, əsas kompüter istifadəsi və öyrənmək həvəsi kifayətdir.",
@@ -3342,20 +3742,26 @@ const i18nData = {
     pawsyTitle: "Pawsy • Eko Marka Kimliği",
     pawsyDesc: "Grafik Tasarım bitirme projesi: Pawsy için marka kimliği. Ders sırasında hazırlanan gerçek proje doğrudan portfolyoya girer.",
     mentorHeading: "Öğretmen Değil, Sektörde Üreten Mentorlar",
-    mentorSubhead: "Bizde dersleri teorisyenler değil; bugün gerçek pazarda lider ajans ve şirketlerle çalışan yaratıcı direktörler verir.",
-    mentorBadge: "✦ Adobe Certified Expert",
-    mentorName: "Ülvi Quluzadə",
-    mentorRole: "İcra Direktörü ve Kurucu Kreatif",
-    mentorBio: "Uluslararası ve yerel projelerde, kurumsal markalama alanında 7 yıllık deneyime sahip, yapay zeka adaptasyonlu eğitim programının kurucusu.",
-    mentorQuote: "“Amacımız öğrencilere sadece standart tasarımı öğretmek değil; çağın gereksinimlerine uygun yapay zeka tabanlı araçları ve yaratıcı bir tasarımcı gibi düşünmeyi kazandırmaktır.”",
-    mStat1Val: "7+ Yıl",
-    mStat1Lbl: "Deneyim",
-    mStat2Val: "40+",
-    mStat2Lbl: "Proje",
-    mStat3Val: "%95",
-    mStat3Lbl: "Başarılı freelance iş",
-    mStat4Val: "Top %5",
-    mStat4Lbl: "Sektör derecesi",
+    mentorSubhead: "Bizde dersleri teorisyenler değil; bugün gerçek pazarda lider şirketlerle çalışan ve ticari ürünler üreten uzmanlar verir.",
+    rufatBadge: "✦ UI/UX &amp; ÜRÜN TASARIMI LİDERİ",
+    rufatName: "Rüfət Qədirli",
+    rufatRole: "UI/UX Uzmanı",
+    rufatStatExp: "6+ Yıl Deneyim",
+    rufatStatProj: "124 Proje",
+    semaBadge: "✦ MARKA KİMLİĞİ &amp; GÖRSEL DİREKTÖR",
+    semaName: "Səma Məsimli",
+    semaRole: "Grafik Tasarım Uzmanı",
+    semaStatExp: "3+ Yıl Deneyim",
+    semaStatProj: "50+ Proje",
+    nicatBadge: "✦ 2D MOTION &amp; ANİMASYON YÖNETMENİ",
+    nicatName: "Nicat Mehdi",
+    nicatRole: "2D Motion Tasarım Uzmanı",
+    nicatStatExp: "7+ Yıl Deneyim",
+    nicatStatProj: "150 Proje",
+    btnMentorDetail: "Detaylı Profil &amp; Programlar ↗",
+    mentorModalTopBadge: "GATE ACADEMY • MENTOR PROFİLİ",
+    mentorToolsHeading: "KULLANDIĞI PROFESYONEL PROGRAMLAR",
+    mentorBtnEnroll: "Bu Mentorun Kursuna Kayıt Ol",
     faqHeading: "Soruların mı var?",
     faqQ1: "Tasarım bilmeden de başlayabilir miyim?",
     faqA1: "Evet. Programlarımız tamamen sıfırdan başlar. Önceki tasarım tecrübesi aranmaz; temel bilgisayar kullanımı ve öğrenme motivasyonu yeterlidir.",
@@ -3477,21 +3883,27 @@ const i18nData = {
     pawsyBadge: "✦ Graphic Design Capstone",
     pawsyTitle: "Pawsy • Eco Brand Identity",
     pawsyDesc: "Graphic Design capstone project: Brand identity for Pawsy. Commercial client briefs built during classes go straight into your portfolio.",
-    mentorHeading: "Taught by Industry Leads, Not Theorists",
-    mentorSubhead: "Learn directly from active creative directors running commercial briefs for leading agencies and global clients.",
-    mentorBadge: "✦ Adobe Certified Expert",
-    mentorName: "Ulvi Guluzada",
-    mentorRole: "Managing Director & Creative Founder",
-    mentorBio: "7+ years of experience across international and local projects in corporate branding; creator of the AI-adapted design curriculum.",
-    mentorQuote: "“Our mission is not merely to teach standard design tools, but to empower students with modern AI-driven workflows and the mindset of a truly creative designer.”",
-    mStat1Val: "7+ Yrs",
-    mStat1Lbl: "Experience",
-    mStat2Val: "40+",
-    mStat2Lbl: "Projects",
-    mStat3Val: "95%",
-    mStat3Lbl: "Freelance Success",
-    mStat4Val: "Top 5%",
-    mStat4Lbl: "Industry Rating",
+    mentorHeading: "Industry Creators, Not Just Teachers",
+    mentorSubhead: "Learn directly from active industry leads and creative directors building real commercial products in today's market.",
+    rufatBadge: "✦ UI/UX &amp; PRODUCT DESIGN LEAD",
+    rufatName: "Rufat Gadirli",
+    rufatRole: "UI/UX Design Lead",
+    rufatStatExp: "6+ Years Exp.",
+    rufatStatProj: "124 Projects",
+    semaBadge: "✦ BRAND IDENTITY &amp; VISUAL LEAD",
+    semaName: "Sema Masimli",
+    semaRole: "Graphic Design Lead",
+    semaStatExp: "3+ Years Exp.",
+    semaStatProj: "50+ Projects",
+    nicatBadge: "✦ 2D MOTION &amp; ANIMATION DIRECTOR",
+    nicatName: "Nijat Mehdi",
+    nicatRole: "2D Motion Design Lead",
+    nicatStatExp: "7+ Years Exp.",
+    nicatStatProj: "150 Projects",
+    btnMentorDetail: "Detailed Profile &amp; Tools ↗",
+    mentorModalTopBadge: "GATE ACADEMY • MENTOR PROFILE",
+    mentorToolsHeading: "PROFESSIONAL SOFTWARE SUITE",
+    mentorBtnEnroll: "Enroll with this Mentor",
     faqHeading: "Have Questions?",
     faqQ1: "Can I join with zero prior design experience?",
     faqA1: "Yes. Our courses begin from absolute fundamentals. No prior design background is required; basic computer literacy and drive to learn are all you need.",
@@ -3733,6 +4145,10 @@ function setLanguage(lang) {
       btn.classList.remove('is-active');
     }
   });
+
+  if (typeof activeMentorKey !== 'undefined' && typeof renderMentorModal === 'function') {
+    renderMentorModal(activeMentorKey);
+  }
 }
 
 // Initialize language from localStorage or default 'az'
@@ -3858,10 +4274,296 @@ modalOverlay.addEventListener('click', (e) => {
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
+    if (mentorModal && mentorModal.classList.contains('is-active')) closeMentorModal();
     if (regModal && regModal.classList.contains('is-active')) closeRegModal();
     if (modalOverlay && modalOverlay.classList.contains('is-active')) closeModal();
     if (mobileDrawer && mobileDrawer.classList.contains('is-open')) toggleDrawer(false);
   }
+});
+
+// =====================================================================
+// INTERACTIVE MENTORS LOGIC & MODAL SYSTEM
+// =====================================================================
+const mentorsData = {
+  rufat: {
+    key: "rufat",
+    courseKey: "uiux",
+    photo: "rufat_qadirli.png",
+    name: "Rüfət Qədirli",
+    role: {
+      az: "UI/UX üzrə ekspert",
+      tr: "UI/UX Uzmanı",
+      en: "UI/UX Design Lead"
+    },
+    badge: {
+      az: "✦ UI/UX & PRODUCT DESIGN LEAD",
+      tr: "✦ UI/UX & ÜRÜN TASARIMI LİDERİ",
+      en: "✦ UI/UX & PRODUCT DESIGN LEAD"
+    },
+    stats: {
+      az: { exp: "6+ il", expLbl: "Təcrübə", proj: "124", projLbl: "Layihə", sat: "98%", satLbl: "Müştəri Rəyi", rate: "Top 3%", rateLbl: "Sənaye Reytinqi" },
+      tr: { exp: "6+ Yıl", expLbl: "Deneyim", proj: "124", projLbl: "Proje", sat: "%98", satLbl: "Müşteri Memnuniyeti", rate: "Top %3", rateLbl: "Sektör Sıralaması" },
+      en: { exp: "6+ Yrs", expLbl: "Experience", proj: "124", projLbl: "Projects", sat: "98%", satLbl: "Client Review", rate: "Top 3%", rateLbl: "Industry Rating" }
+    },
+    quote: {
+      az: "“Dizayn təkcə gözəl görünüş deyil, istifadəçinin problemini ən rahat və sürətli şəkildə həll etmə sənətidir.”",
+      tr: "“Tasarım yalnızca estetik görünüm değil, kullanıcının problemini en sezgisel ve hızlı şekilde çözme sanatıdır.”",
+      en: "“Great design is not just visual aesthetics; it is the art of solving user problems effortlessly and seamlessly.”"
+    },
+    bio: {
+      az: "6 ildən artıq beynəlxalq və yerli fin-tex, e-ticarət və startap məhsullarının UI/UX arxitekturasını qurmuş aparıcı məhsul dizayneri. Real istifadəçi araşdırmaları, böyük miqyaslı dizayn sistemləri və konversiyanı artıran interfeyslərin qurulması üzrə ixtisaslaşıb.",
+      tr: "6 yılı aşkın süredir uluslararası ve yerel fintech, e-ticaret ve girişimlerin UI/UX mimarisini tasarlayan kıdemli ürün tasarımcısı. Kullanıcı araştırmaları, tasarım sistemleri ve dönüşüm artıran arayüzler üzerine uzmandır.",
+      en: "Senior product designer with 6+ years designing UX/UI systems for fintech, e-commerce, and fast-growing startups. Specialized in user research, scalable design systems, and conversion-optimized interfaces."
+    },
+    tools: [
+      { badge: "ad-fg", code: "Fg", name: "Figma", desc: { az: "İnterfeys & Dizayn Sistemi", tr: "Arayüz & Tasarım Sistemi", en: "Interface & Design Systems" } },
+      { badge: "ad-xd", code: "Xd", name: "Adobe XD", desc: { az: "İnteraktiv Prototip", tr: "Etkileşimli Prototip", en: "Interactive Prototyping" } },
+      { badge: "ad-ps", code: "Ps", name: "Photoshop", desc: { az: "Vizual Aktivlər & Qrafika", tr: "Görsel Varlıklar & Vektör", en: "Visual Assets & UI Art" } },
+      { badge: "ad-ai", code: "Ai", name: "Illustrator", desc: { az: "İkona & Vektor Dizayn", tr: "İkon & Vektörel Çizim", en: "Iconography & Vector" } },
+      { badge: "ad-hf", code: "Hf", name: "AI UI Tools", desc: { az: "Süni İntellektlə Prototip", tr: "Yapay Zeka Prototip", en: "AI Prompting & UI Kit" } }
+    ]
+  },
+  sema: {
+    key: "sema",
+    courseKey: "qrafik",
+    photo: "sema_masimli.png",
+    name: "Səma Məsimli",
+    role: {
+      az: "Qrafik Dizayn üzrə ekspert",
+      tr: "Grafik Tasarım Uzmanı",
+      en: "Graphic Design Lead"
+    },
+    badge: {
+      az: "✦ BRAND IDENTITY & VISUAL LEAD",
+      tr: "✦ MARKA KİMLİĞİ & GÖRSEL DİREKTÖR",
+      en: "✦ BRAND IDENTITY & VISUAL LEAD"
+    },
+    stats: {
+      az: { exp: "3+ il", expLbl: "Təcrübə", proj: "50+", projLbl: "Layihə", sat: "100%", satLbl: "Brend İcrası", rate: "A+", rateLbl: "Kreativ İdarəetmə" },
+      tr: { exp: "3+ Yıl", expLbl: "Deneyim", proj: "50+", projLbl: "Proje", sat: "%100", satLbl: "Marka Teslimi", rate: "A+", rateLbl: "Kreatif Yönetim" },
+      en: { exp: "3+ Yrs", expLbl: "Experience", proj: "50+", projLbl: "Projects", sat: "100%", satLbl: "Brand Delivery", rate: "A+", rateLbl: "Creative Direction" }
+    },
+    quote: {
+      az: "“Brendin əsl gücü onun vizual harmoniyasında və hər xırda detalında gizlənən təsirli hekayəsindədir.”",
+      tr: "“Bir markanın gerçek gücü görsel ahenginde ve en ince detayında saklı etkileyici hikayesindedir.”",
+      en: "“A brand's true power lies within its visual harmony and the compelling story embedded in every single detail.”"
+    },
+    bio: {
+      az: "Aparıcı brendlərin korporativ vizual kimliyi, loqotip arxitekturası, qablaşdırma dizaynı və generative AI adaptasiyası üzrə ixtisaslaşmış peşəkar dizayner. 50-dən artıq kommersiya layihəsinin və qlobal standartlı vizual konsepsiyaların müəllifidir.",
+      tr: "Öncü markaların kurumsal görsel kimliği, logo mimarisi, ambalaj tasarımı ve üretken yapay zeka entegrasyonu alanında uzmanlaşmış tasarımcı. 50'den fazla ticari markalama projesinin yapımcısıdır.",
+      en: "Visual designer specializing in corporate brand identity, logo design, packaging, and generative AI production. Creator of 50+ commercial branding campaigns and global identity systems."
+    },
+    tools: [
+      { badge: "ad-ps", code: "Ps", name: "Photoshop", desc: { az: "Brend Vizualları & Retuş", tr: "Marka Görselleri & Rötuş", en: "Branding Visuals & Retouching" } },
+      { badge: "ad-ai", code: "Ai", name: "Illustrator", desc: { az: "Loqotip & Vektor Brendinq", tr: "Logo & Vektörel Tasarım", en: "Logo & Vector Identity" } },
+      { badge: "ad-id", code: "Id", name: "InDesign", desc: { az: "Kataloq & Poliqrafiya", tr: "Katalog & Basılı Medya", en: "Editorial & Print Layouts" } },
+      { badge: "ad-ff", code: "Ff", name: "Firefly", desc: { az: "Adobe AI Yaradıcılığı", tr: "Adobe Yapay Zeka", en: "Adobe Generative AI" } },
+      { badge: "ad-hf", code: "Hf", name: "Higgsfield", desc: { az: "AI Vizual Sintezi", tr: "AI Görsel Üretimi", en: "AI Visual Generation" } }
+    ]
+  },
+  nicat: {
+    key: "nicat",
+    courseKey: "motion",
+    photo: "nicat_mehdi.png",
+    name: "Nicat Mehdi",
+    role: {
+      az: "2D Motion Dizayn üzrə ekspert",
+      tr: "2D Motion Tasarım Uzmanı",
+      en: "2D Motion Design Lead"
+    },
+    badge: {
+      az: "✦ 2D MOTION & ANIMATION DIRECTOR",
+      tr: "✦ 2D MOTION & ANİMASYON YÖNETMENİ",
+      en: "✦ 2D MOTION & ANIMATION DIRECTOR"
+    },
+    stats: {
+      az: { exp: "7+ il", expLbl: "Təcrübə", proj: "150", projLbl: "Layihə", sat: "60 FPS", satLbl: "Səlis Dinamika", rate: "Top 1%", rateLbl: "Animasiya & VFX" },
+      tr: { exp: "7+ Yıl", expLbl: "Deneyim", proj: "150", projLbl: "Proje", sat: "60 FPS", satLbl: "Akıcı Dinamik", rate: "Top %1", rateLbl: "Animasyon & VFX" },
+      en: { exp: "7+ Yrs", expLbl: "Experience", proj: "150", projLbl: "Projects", sat: "60 FPS", satLbl: "Smooth Timing", rate: "Top 1%", rateLbl: "Animation & VFX" }
+    },
+    quote: {
+      az: "“Hərəkət statik dizaynın ruhudur. Biz hər kadra canlı dinamika, ritm və unudulmaz emosiya qatırıq.”",
+      tr: "“Hareket statik tasarımın ruhudur. Her kareye canlı bir ritim, dinamizm ve unutulmaz bir duygu katarız.”",
+      en: "“Motion is the soul of static design. We inject vibrant rhythm, dynamics, and unforgettable emotion into every frame.”"
+    },
+    bio: {
+      az: "Televiziya, rəqəmsal reklam agentlikləri və qlobal media üçün 7 ildən artıq 2D hərəkətli qrafika, kinetik tipoqrafiya və VFX layihələri hazırlayan animasiya direktoru. 150-dən çox reklam çarxı və promo animasiyasının müəllifidir.",
+      tr: "Televizyon, dijital ajanslar ve küresel medya için 7 yılı aşkın süredir 2D hareketli grafik, kinetik tipografi ve görsel efekt üreten animasyon direktörü. 150'den fazla ticari reklam filminin yapımcısıdır.",
+      en: "Animation director with 7+ years directing 2D motion graphics, kinetic typography, and VFX for broadcasting, commercial agencies, and global brands across 150+ productions."
+    },
+    tools: [
+      { badge: "ad-ae", code: "Ae", name: "After Effects", desc: { az: "2D Motion Qrafika & VFX", tr: "2D Motion Grafik & VFX", en: "2D Motion Graphics & VFX" } },
+      { badge: "ad-pr", code: "Pr", name: "Premiere Pro", desc: { az: "Video Montaj & Koloristika", tr: "Video Kurgu & Renk", en: "Video Editing & Color" } },
+      { badge: "ad-ai", code: "Ai", name: "Illustrator", desc: { az: "Animasiya Vektorları", tr: "Animasyon Vektörleri", en: "Vector Asset Prep" } },
+      { badge: "ad-hf", code: "Hf", name: "Higgsfield", desc: { az: "AI Video Animasiyası", tr: "AI Video Animasyon", en: "AI Video Generation" } },
+      { badge: "ad-ff", code: "✦", name: "Motion AI", desc: { az: "Kinetik Dinamika & VFX", tr: "Kinetik Dinamik & VFX", en: "Kinetic AI Dynamics" } }
+    ]
+  }
+};
+
+let activeMentorKey = 'rufat';
+const mentorModal = document.getElementById('mentorModal');
+const mentorModalBody = document.getElementById('mentorModalBody');
+const mentorModalCloseBtn = document.getElementById('mentorModalCloseBtn');
+const mentorModalTabs = document.querySelectorAll('[data-tab-mentor]');
+const mentorCards = document.querySelectorAll('.mentor-grid-card');
+
+function renderMentorModal(key) {
+  if (!mentorsData[key]) key = 'rufat';
+  activeMentorKey = key;
+  const lang = (typeof currentLang !== 'undefined' && currentLang) ? currentLang : 'az';
+  const m = mentorsData[key];
+  const s = m.stats[lang] || m.stats.az;
+  const roleText = m.role[lang] || m.role.az;
+  const badgeText = m.badge[lang] || m.badge.az;
+  const quoteText = m.quote[lang] || m.quote.az;
+  const bioText = m.bio[lang] || m.bio.az;
+  const toolsTitle = (i18nData[lang] && i18nData[lang].mentorToolsHeading) || 'İSTİFADƏ ETDİYİ PEŞƏKAR PROQRAMLAR';
+  const enrollText = (i18nData[lang] && i18nData[lang].mentorBtnEnroll) || 'Bu Mentorun Kursuna Qeydiyyat';
+
+  mentorModalTabs.forEach(tab => {
+    tab.classList.toggle('is-active', tab.getAttribute('data-tab-mentor') === key);
+  });
+
+  if (mentorModalBody) {
+    mentorModalBody.innerHTML = `
+      <div class="mentor-modal-hero">
+        <div class="mentor-modal-avatar">
+          <div class="avatar-inner">
+            <img src="${m.photo}" alt="${m.name}">
+          </div>
+          <div class="mentor-verified" title="Verified Expert">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+        <div class="mentor-modal-intro">
+          <span class="mentor-badge-chip">${badgeText}</span>
+          <h3 id="mentorModalName">${m.name}</h3>
+          <div class="mentor-modal-role">${roleText}</div>
+          <div class="mentor-card-stats" style="margin-bottom:0;">
+            <span>${s.exp} ${s.expLbl}</span>
+            <span class="stat-sep">•</span>
+            <span>${s.proj} ${s.projLbl}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mentor-modal-quote">${quoteText}</div>
+
+      <p class="mentor-modal-bio">${bioText}</p>
+
+      <div class="mentor-modal-stats">
+        <div class="mentor-modal-stat-card">
+          <strong>${s.exp}</strong>
+          <small>${s.expLbl}</small>
+        </div>
+        <div class="mentor-modal-stat-card">
+          <strong>${s.proj}</strong>
+          <small>${s.projLbl}</small>
+        </div>
+        <div class="mentor-modal-stat-card">
+          <strong>${s.sat}</strong>
+          <small>${s.satLbl}</small>
+        </div>
+        <div class="mentor-modal-stat-card">
+          <strong>${s.rate}</strong>
+          <small>${s.rateLbl}</small>
+        </div>
+      </div>
+
+      <div class="mentor-modal-tools-sec">
+        <div class="mentor-modal-tools-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          <span>${toolsTitle}</span>
+        </div>
+        <div class="mentor-modal-tools-grid">
+          ${m.tools.map(t => {
+            const tDesc = t.desc[lang] || t.desc.az;
+            return `
+              <div class="mentor-tool-item">
+                <span class="ad-badge ${t.badge}" style="width:28px;height:28px;font-size:12px;">${t.code}</span>
+                <div class="mentor-tool-info">
+                  <span class="mentor-tool-name">${t.name}</span>
+                  <span class="mentor-tool-desc">${tDesc}</span>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  const enrollBtn = document.getElementById('mentorModalEnrollBtn');
+  if (enrollBtn) {
+    enrollBtn.textContent = enrollText;
+    enrollBtn.onclick = () => {
+      closeMentorModal();
+      openRegModal(m.courseKey);
+    };
+  }
+}
+
+function openMentorModal(key) {
+  if (modalOverlay && modalOverlay.classList.contains('is-active')) closeModal();
+  if (mobileDrawer && mobileDrawer.classList.contains('is-open')) toggleDrawer(false);
+  if (regModal && regModal.classList.contains('is-active')) closeRegModal();
+
+  renderMentorModal(key);
+  mentorModal.classList.add('is-active');
+  document.body.classList.add('modal-open');
+}
+
+function closeMentorModal() {
+  mentorModal.classList.remove('is-active');
+  document.body.classList.remove('modal-open');
+}
+
+mentorModalTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const key = tab.getAttribute('data-tab-mentor');
+    renderMentorModal(key);
+  });
+});
+
+if (mentorModalCloseBtn) {
+  mentorModalCloseBtn.addEventListener('click', closeMentorModal);
+}
+
+if (mentorModal) {
+  mentorModal.addEventListener('click', (e) => {
+    if (e.target === mentorModal) closeMentorModal();
+  });
+}
+
+mentorCards.forEach(card => {
+  const mentorKey = card.getAttribute('data-mentor');
+  let hoverTimer = null;
+
+  card.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (hoverTimer) clearTimeout(hoverTimer);
+    openMentorModal(mentorKey);
+  });
+
+  card.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openMentorModal(mentorKey);
+    }
+  });
+
+  card.addEventListener('mouseenter', () => {
+    hoverTimer = setTimeout(() => {
+      if (!mentorModal.classList.contains('is-active') && !regModal.classList.contains('is-active')) {
+        openMentorModal(mentorKey);
+      }
+    }, 380);
+  });
+
+  card.addEventListener('mouseleave', () => {
+    if (hoverTimer) clearTimeout(hoverTimer);
+  });
 });
 
 // Custom 3-Step Animated Registration Wizard & Mail Bot Integration
@@ -3958,7 +4660,10 @@ function openRegModal(preselectedCourse) {
     selectCourseOption(preselectedCourse);
   }
 
-  // Close syllabus modal or mobile drawer if open
+  // Close mentor modal, syllabus modal or mobile drawer if open
+  if (mentorModal && mentorModal.classList.contains('is-active')) {
+    closeMentorModal();
+  }
   if (modalOverlay && modalOverlay.classList.contains('is-active')) {
     closeModal();
   }
