@@ -1285,6 +1285,526 @@ section {
   border-color: rgba(174, 255, 3, 0.3);
 }
 
+/* =====================================================================
+   STUDENT SHOWCASE CAROUSEL (PAWSY & LAMIE)
+   ===================================================================== */
+#isler {
+  margin-top: clamp(64px, 10vw, 120px);
+}
+
+.works-header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+
+.works-nav-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--paper);
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  border-radius: 100px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+}
+
+.works-arrow-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--sheet);
+  color: var(--text);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.works-arrow-btn:hover {
+  background: var(--blue);
+  color: #fff;
+  border-color: var(--blue);
+  transform: scale(1.08);
+}
+
+:root[data-theme="dark"] .works-arrow-btn:hover {
+  background: var(--green);
+  color: var(--navy);
+  border-color: var(--green);
+}
+
+.works-counter {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  color: var(--text-muted);
+  min-width: 48px;
+  text-align: center;
+}
+
+.works-carousel-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 36px;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.works-carousel-track {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 100%;
+}
+
+.works-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.work-card-inner {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 40px;
+  align-items: center;
+  background: var(--paper);
+  border: 1.5px solid var(--border);
+  border-radius: 36px;
+  padding: clamp(24px, 4vw, 44px);
+  box-shadow: var(--card-shadow);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.works-slide.theme-red .work-card-inner {
+  background: linear-gradient(135deg, var(--paper), rgba(230, 57, 70, 0.08));
+  border-color: rgba(230, 57, 70, 0.35);
+}
+
+:root[data-theme="dark"] .works-slide.theme-red .work-card-inner {
+  background: linear-gradient(135deg, var(--paper), rgba(230, 57, 70, 0.12));
+  border-color: rgba(255, 69, 84, 0.45);
+}
+
+.work-visual-box {
+  position: relative;
+  border-radius: 26px;
+  overflow: hidden;
+  min-height: 320px;
+  height: 100%;
+  max-height: 420px;
+  cursor: pointer;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+  background: var(--navy);
+}
+
+.work-preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.work-visual-box:hover .work-preview-img {
+  transform: scale(1.05);
+}
+
+.work-visual-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 8, 20, 0.75) 0%, rgba(0, 8, 20, 0.05) 60%, transparent 100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 18px 20px;
+  opacity: 0.95;
+}
+
+.work-photo-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 6px 12px;
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.work-zoom-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--green);
+  color: var(--navy);
+  font-size: 12.5px;
+  font-weight: 900;
+  padding: 7px 14px;
+  border-radius: 100px;
+  box-shadow: 0 4px 14px rgba(43, 255, 57, 0.35);
+  transition: transform 0.25s ease;
+}
+
+.works-slide.theme-red .work-zoom-pill {
+  background: #E63946;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(230, 57, 70, 0.4);
+}
+
+.work-visual-box:hover .work-zoom-pill {
+  transform: translateY(-2px) scale(1.04);
+}
+
+.work-info-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+}
+
+.work-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--blue);
+  background: rgba(30, 69, 252, 0.08);
+  padding: 5px 12px;
+  border-radius: 100px;
+  width: fit-content;
+}
+
+:root[data-theme="dark"] .work-badge-pill {
+  color: var(--green);
+  background: rgba(43, 255, 57, 0.12);
+}
+
+.work-badge-pill.pill-red {
+  color: #E63946 !important;
+  background: rgba(230, 57, 70, 0.12) !important;
+}
+
+.work-project-title {
+  font-size: clamp(28px, 3.8vw, 42px);
+  font-weight: 900;
+  color: var(--text);
+  line-height: 1.1;
+  margin: 0;
+}
+
+.work-author-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.author-avatar-chip {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue), var(--green));
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 15px;
+  font-weight: 900;
+  box-shadow: 0 4px 12px rgba(30, 69, 252, 0.25);
+  flex-shrink: 0;
+}
+
+.author-avatar-chip.chip-red {
+  background: linear-gradient(135deg, #E63946, #FF6B6B);
+  box-shadow: 0 4px 12px rgba(230, 57, 70, 0.35);
+}
+
+.work-author-row strong {
+  display: block;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.work-author-row small {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.work-desc-text {
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.work-tools-list {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.work-tool-tag {
+  font-size: 12px;
+  font-weight: 800;
+  background: var(--sheet);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 4px 12px;
+  border-radius: 100px;
+}
+
+.work-tool-tag.tag-red {
+  border-color: rgba(230, 57, 70, 0.35);
+  color: #E63946;
+}
+
+:root[data-theme="dark"] .work-tool-tag.tag-red {
+  color: #FF6B6B;
+}
+
+.btn-red {
+  background: #E63946 !important;
+  color: #fff !important;
+  border-color: #E63946 !important;
+  box-shadow: 0 8px 24px rgba(230, 57, 70, 0.35) !important;
+}
+
+.works-dots-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.works-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 100px;
+  background: var(--border);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.works-dot.is-active {
+  width: 34px;
+  background: var(--blue);
+}
+
+:root[data-theme="dark"] .works-dot.is-active {
+  background: var(--green);
+}
+
+.works-dot[data-slide-index="1"].is-active {
+  background: #E63946 !important;
+}
+
+/* =====================================================================
+   PROJECT GALLERY LIGHTBOX MODAL
+   ===================================================================== */
+.gallery-modal-card {
+  max-width: 900px;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.gallery-modal-top {
+  padding: 20px 28px 18px;
+}
+
+.gallery-counter-badge {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--green);
+  background: rgba(43, 255, 57, 0.15);
+  border: 1px solid rgba(43, 255, 57, 0.35);
+  padding: 4px 12px;
+  border-radius: 100px;
+  letter-spacing: .06em;
+}
+
+.gallery-modal-body {
+  padding: 20px 28px;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.gallery-stage-wrap {
+  position: relative;
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #000814;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 380px;
+  max-height: 520px;
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.6);
+  user-select: none;
+}
+
+.gallery-img-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.gallery-active-image {
+  max-width: 100%;
+  max-height: 500px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  border-radius: 14px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.gallery-arrow-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(11, 27, 94, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.25s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.gallery-arrow-nav:hover {
+  background: var(--green);
+  color: var(--navy);
+  border-color: var(--green);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.gallery-arrow-nav.prev {
+  left: 16px;
+}
+
+.gallery-arrow-nav.next {
+  right: 16px;
+}
+
+.gallery-caption-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 8px 4px 0;
+}
+
+.gallery-caption-text {
+  font-size: 14.5px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.gallery-thumbs-track {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.gallery-thumbs-track::-webkit-scrollbar { display: none; }
+
+.gallery-thumb-btn {
+  width: 52px;
+  height: 38px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  padding: 0;
+  background: var(--paper);
+  cursor: pointer;
+  opacity: 0.5;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.gallery-thumb-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery-thumb-btn.is-active,
+.gallery-thumb-btn:hover {
+  opacity: 1;
+  border-color: var(--blue);
+  transform: translateY(-2px);
+}
+
+:root[data-theme="dark"] .gallery-thumb-btn.is-active,
+:root[data-theme="dark"] .gallery-thumb-btn:hover {
+  border-color: var(--green);
+}
+
+.gallery-modal-footer {
+  padding: 16px 28px 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  background: var(--paper);
+}
+
+@media (max-width: 900px) {
+  .work-card-inner {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .work-visual-box {
+    min-height: 260px;
+  }
+  .gallery-stage-wrap {
+    min-height: 260px;
+  }
+  .gallery-arrow-nav {
+    width: 42px;
+    height: 42px;
+  }
+}
+
 .work {
   display: grid;
   grid-template-columns: 1.1fr 1fr;
@@ -3069,13 +3589,128 @@ footer a:hover {
 
   <!-- ================= STUDENT SHOWCASE ================= -->
   <section id="isler">
-    <h2 class="big rv" data-i18n="worksHeading">Tələbə işi</h2>
-    <div class="work">
-      <div class="shot rv">Pawsy</div>
-      <div class="rv" style="--d:.15s">
-        <h3 data-i18n="pawsyAuthor">Fidan İsayeva</h3>
-        <p data-i18n="pawsyDesc">Qrafik Dizayn final layihəsi: Pawsy üçün brend kimliyi. Dərs zamanı hazırlanan real iş portfolioya birbaşa düşür.</p>
-        
+    <div class="works-header-row rv">
+      <div>
+        <h2 class="big" data-i18n="worksHeading">Tələbə işi</h2>
+        <p class="section-subhead" style="margin-top:8px;" data-i18n="worksSubhead">Dərs tapşırığı yox, birbaşa müştəriyə təqdim edilən və Behance/Dribbble-da bəyənilən real brend keysləri.</p>
+      </div>
+
+      <!-- Arrow Controls -->
+      <div class="works-nav-controls" role="group" aria-label="Layihələr arasında keçid">
+        <button type="button" class="works-arrow-btn" id="worksPrevBtn" aria-label="Əvvəlki layihə">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span class="works-counter" id="worksSlideCounter">01 / 02</span>
+        <button type="button" class="works-arrow-btn" id="worksNextBtn" aria-label="Növbəti layihə">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="works-carousel-wrapper rv">
+      <div class="works-carousel-track" id="worksCarouselTrack">
+        <!-- SLIDE 1: PAWSY -->
+        <article class="works-slide is-active" data-project-slide="pawsy">
+          <div class="work-card-inner">
+            <div class="work-visual-box open-gallery-trigger" data-project-key="pawsy" role="button" tabindex="0" title="Layihəyə bax">
+              <img src="pawsy_1_cards.jpg" alt="Pawsy • Pet Shop" class="work-preview-img" loading="lazy">
+              <div class="work-visual-overlay">
+                <span class="work-photo-count">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  <span>5 Şəkil</span>
+                </span>
+                <span class="work-zoom-pill">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                  <span data-i18n="btnViewProject">Projeyi İncele</span>
+                </span>
+              </div>
+            </div>
+
+            <div class="work-info-box">
+              <span class="work-badge-pill" data-i18n="pawsyBadge">✦ Qrafik Dizayn Final Layihəsi</span>
+              <h3 class="work-project-title">Pawsy • Pet Shop</h3>
+              <div class="work-author-row">
+                <div class="author-avatar-chip">Fİ</div>
+                <div>
+                  <strong data-i18n="pawsyAuthor">Fidan İsayeva</strong>
+                  <small data-i18n="pawsyAuthorRole">Qrafik Dizayn proqramı tələbəsi</small>
+                </div>
+              </div>
+
+              <p class="work-desc-text" data-i18n="pawsyDesc">
+                Ev heyvanları üçün eko-məhsul brendinin sıfırdan loqosu, qablaşdırma seriyası, tipoqrafik sistemi və vizual kimliyi. Dərs zamanı hazırlanan real iş portfolioya birbaşa düşür.
+              </p>
+
+              <div class="work-tools-list">
+                <span class="work-tool-tag">Photoshop</span>
+                <span class="work-tool-tag">Illustrator</span>
+                <span class="work-tool-tag">Higgsfield AI</span>
+              </div>
+
+              <div>
+                <button type="button" class="btn go open-gallery-btn" data-project-key="pawsy">
+                  <span data-i18n="btnViewProject">Projeyi İncele</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- SLIDE 2: LAMIE (RED THEMED) -->
+        <article class="works-slide theme-red" data-project-slide="lamie">
+          <div class="work-card-inner">
+            <div class="work-visual-box open-gallery-trigger" data-project-key="lamie" role="button" tabindex="0" title="Layihəyə bax">
+              <img src="lamie_1_packaging.jpg" alt="Lamie • Estetika &amp; Qablaşdırma" class="work-preview-img" loading="lazy">
+              <div class="work-visual-overlay">
+                <span class="work-photo-count">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  <span>3 Şəkil</span>
+                </span>
+                <span class="work-zoom-pill">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                  <span data-i18n="btnViewProject">Projeyi İncele</span>
+                </span>
+              </div>
+            </div>
+
+            <div class="work-info-box">
+              <span class="work-badge-pill pill-red" data-i18n="lamieBadge">✦ Qrafik Dizayn Məzun Layihəsi</span>
+              <h3 class="work-project-title">Lamie</h3>
+              <div class="work-author-row">
+                <div class="author-avatar-chip chip-red">ŞE</div>
+                <div>
+                  <strong data-i18n="lamieAuthor">Şəbnəm Eminli</strong>
+                  <small data-i18n="lamieAuthorRole">Qrafik Dizayn proqramı üzrə məzun</small>
+                </div>
+              </div>
+
+              <p class="work-desc-text" data-i18n="lamieDesc">
+                Müasir premium qulluq və estetika brendi "Lamie" üçün korporativ kimlik, zərif qablaşdırma xətti, qızılı tipoqrafiya arxitekturası və 3D vizuallaşdırma layihəsi.
+              </p>
+
+              <div class="work-tools-list">
+                <span class="work-tool-tag tag-red">Illustrator</span>
+                <span class="work-tool-tag tag-red">Photoshop</span>
+                <span class="work-tool-tag tag-red">InDesign</span>
+                <span class="work-tool-tag tag-red">Firefly</span>
+              </div>
+
+              <div>
+                <button type="button" class="btn go btn-red open-gallery-btn" data-project-key="lamie">
+                  <span data-i18n="btnViewProject">Projeyi İncele</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Dots Indicators -->
+      <div class="works-dots-row" id="worksDotsRow">
+        <button type="button" class="works-dot is-active" data-slide-index="0" aria-label="Layihə 1: Pawsy"></button>
+        <button type="button" class="works-dot" data-slide-index="1" aria-label="Layihə 2: Lamie"></button>
       </div>
     </div>
   </section>
@@ -3507,6 +4142,59 @@ footer a:hover {
   </div>
 </div>
 
+<!-- ================= PROJECT GALLERY LIGHTBOX MODAL ================= -->
+<div class="reg-modal-overlay" id="projectGalleryModal" role="dialog" aria-modal="true" aria-labelledby="galleryProjectTitle">
+  <div class="reg-modal-card gallery-modal-card">
+    <div class="reg-modal-top gallery-modal-top">
+      <div class="reg-top-row">
+        <span class="reg-brand-pill">
+          <span class="pulse-dot"></span>
+          <span data-i18n="galleryBrandBadge">GATE ACADEMY • TƏLƏBƏ İŞİ</span>
+        </span>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span class="gallery-counter-badge" id="galleryCounterBadge">1 / 5</span>
+          <button type="button" class="reg-close-btn" id="galleryCloseBtn" aria-label="Bağla">&times;</button>
+        </div>
+      </div>
+
+      <div class="gallery-header-meta">
+        <h3 id="galleryProjectTitle" style="font-size:22px;font-weight:900;margin:10px 0 2px;color:#fff;">Pawsy • Pet Shop</h3>
+        <p id="galleryProjectAuthor" style="font-size:13px;color:rgba(255,255,255,0.8);margin:0;">Müəllif: Fidan İsayeva</p>
+      </div>
+    </div>
+
+    <div class="gallery-modal-body">
+      <!-- Main Image Stage with Left & Right Arrows -->
+      <div class="gallery-stage-wrap">
+        <button type="button" class="gallery-arrow-nav prev" id="galleryPrevBtn" aria-label="Əvvəlki şəkil">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+
+        <div class="gallery-img-container">
+          <img id="galleryMainImg" src="pawsy_1_cards.jpg" alt="Project Visual" class="gallery-active-image">
+        </div>
+
+        <button type="button" class="gallery-arrow-nav next" id="galleryNextBtn" aria-label="Növbəti şəkil">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+
+      <!-- Caption & Thumbnails -->
+      <div class="gallery-caption-row">
+        <span class="gallery-caption-text" id="galleryCaptionText">01. Vizitkart &amp; Korporativ Dəftərxana</span>
+        <div class="gallery-thumbs-track" id="galleryThumbsTrack">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <div class="gallery-modal-footer">
+      <button type="button" class="btn go open-form" data-course="qrafik" data-i18n="btnEnrollThisCourse">Bu Kursa Qeydiyyat</button>
+      <a class="btn outline" href="https://wa.link/9mwhgp" target="_blank" rel="noopener" data-i18n="btnAskWhatsapp">WhatsApp ilə sual ver</a>
+    </div>
+  </div>
+</div>
+
 <!-- ================= EMAILJS SDK & VANILLA JS ENGINE ================= -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
@@ -3582,7 +4270,14 @@ const i18nData = {
     pawsyLabel: "Final Brendinq Keysi",
     pawsyBadge: "✦ Qrafik Dizayn Final Layihəsi",
     pawsyTitle: "Pawsy • Eko Brend Kimliyi",
+    pawsyAuthorRole: "Qrafik Dizayn proqramı tələbəsi",
     pawsyDesc: "Ev heyvanları üçün eko-məhsul brendinin sıfırdan loqosu, qablaşdırma seriyası, tipoqrafik sistemi və vizual kimliyi. Təlim müddətində hazırlanan layihə birbaşa beynəlxalq standartlı portfolioya daxil edildi.",
+    lamieBadge: "✦ Qrafik Dizayn Məzun Layihəsi",
+    lamieAuthor: "Şəbnəm Eminli",
+    lamieAuthorRole: "Qrafik Dizayn proqramı üzrə məzun",
+    lamieDesc: "Müasir premium qulluq və estetika brendi \"Lamie\" üçün korporativ kimlik, zərif qablaşdırma xətti, qızılı tipoqrafiya arxitekturası və 3D vizuallaşdırma layihəsi.",
+    galleryBrandBadge: "GATE ACADEMY • TƏLƏBƏ İŞİ",
+    btnEnrollThisCourse: "Bu Kursa Qeydiyyat",
     mentorHeading: "Öğretmen Değil, Sektörde Üreten Mentorlar",
     mentorSubhead: "Bizdə dərsləri nəzəriyyəçilər deyil, bu gün real bazarda aparıcı şirkətlərlə çalışan və kommersiya məhsulları yaradan ekspertlər keçir.",
     rufatBadge: "✦ UI/UX &amp; PRODUCT DESIGN LEAD",
@@ -3725,7 +4420,14 @@ const i18nData = {
     pawsyLabel: "Final Markalama Projesi",
     pawsyBadge: "✦ Grafik Tasarım Final Projesi",
     pawsyTitle: "Pawsy • Eko Marka Kimliği",
+    pawsyAuthorRole: "Grafik Tasarım Programı Mezunu",
     pawsyDesc: "Grafik Tasarım bitirme projesi: Pawsy için marka kimliği. Ders sırasında hazırlanan gerçek proje doğrudan portfolyoya girer.",
+    lamieBadge: "✦ Grafik Tasarım Mezuniyet Projesi",
+    lamieAuthor: "Şəbnəm Eminli",
+    lamieAuthorRole: "Grafik Tasarım Programı Mezunu",
+    lamieDesc: "Modern premium bakım ve estetik markası \"Lamie\" için kurumsal kimlik, zarif ambalaj serisi, altın varaklı tipografi ve 3D görselleştirme projesi.",
+    galleryBrandBadge: "GATE ACADEMY • ÖĞRENCİ İŞİ",
+    btnEnrollThisCourse: "Bu Kursa Kayıt Ol",
     mentorHeading: "Öğretmen Değil, Sektörde Üreten Mentorlar",
     mentorSubhead: "Bizde dersleri teorisyenler değil; bugün gerçek pazarda lider şirketlerle çalışan ve ticari ürünler üreten uzmanlar verir.",
     rufatBadge: "✦ UI/UX &amp; ÜRÜN TASARIMI LİDERİ",
@@ -3867,7 +4569,14 @@ const i18nData = {
     pawsyLabel: "Final Branding Case Study",
     pawsyBadge: "✦ Graphic Design Capstone",
     pawsyTitle: "Pawsy • Eco Brand Identity",
+    pawsyAuthorRole: "Graphic Design Student",
     pawsyDesc: "Graphic Design capstone project: Brand identity for Pawsy. Commercial client briefs built during classes go straight into your portfolio.",
+    lamieBadge: "✦ Graphic Design Graduate Project",
+    lamieAuthor: "Shabnam Eminli",
+    lamieAuthorRole: "Graphic Design Graduate",
+    lamieDesc: "Corporate brand identity, luxury packaging architecture, gold-foil typography, and 3D visual direction for premium aesthetic brand \"Lamie\".",
+    galleryBrandBadge: "GATE ACADEMY • STUDENT WORK",
+    btnEnrollThisCourse: "Enroll in this Course",
     mentorHeading: "Industry Creators, Not Just Teachers",
     mentorSubhead: "Learn directly from active industry leads and creative directors building real commercial products in today's market.",
     rufatBadge: "✦ UI/UX &amp; PRODUCT DESIGN LEAD",
@@ -4134,6 +4843,10 @@ function setLanguage(lang) {
   if (typeof activeMentorKey !== 'undefined' && typeof renderMentorModal === 'function') {
     renderMentorModal(activeMentorKey);
   }
+
+  if (typeof activeGalleryProjectKey !== 'undefined' && typeof updateGallerySlide === 'function' && projectGalleryModal && projectGalleryModal.classList.contains('is-active')) {
+    updateGallerySlide(currentGallerySlideIndex);
+  }
 }
 
 // Initialize language from localStorage or default 'az'
@@ -4259,11 +4972,253 @@ modalOverlay.addEventListener('click', (e) => {
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
+    if (projectGalleryModal && projectGalleryModal.classList.contains('is-active')) closeProjectGallery();
     if (mentorModal && mentorModal.classList.contains('is-active')) closeMentorModal();
     if (regModal && regModal.classList.contains('is-active')) closeRegModal();
     if (modalOverlay && modalOverlay.classList.contains('is-active')) closeModal();
     if (mobileDrawer && mobileDrawer.classList.contains('is-open')) toggleDrawer(false);
   }
+  if (projectGalleryModal && projectGalleryModal.classList.contains('is-active')) {
+    if (e.key === 'ArrowLeft') prevGallerySlide();
+    if (e.key === 'ArrowRight') nextGallerySlide();
+  }
+});
+
+// =====================================================================
+// STUDENT SHOWCASE CAROUSEL & PROJECT GALLERY LIGHTBOX
+// =====================================================================
+const studentProjectsData = {
+  pawsy: {
+    key: "pawsy",
+    title: "Pawsy • Pet Shop",
+    author: {
+      az: "Fidan İsayeva",
+      tr: "Fidan İsayeva",
+      en: "Fidan Isayeva"
+    },
+    slides: [
+      { src: "pawsy_1_cards.jpg", caption: { az: "01. Vizitkart & Korporativ Dəftərxana", tr: "01. Kartvizit & Kurumsal Kırtasiye", en: "01. Business Cards & Stationery" } },
+      { src: "pawsy_2_bag.jpg", caption: { az: "02. Ekoloji Qablaşdırma & Kağız Çanta", tr: "02. Ekolojik Ambalaj & Kağıt Çanta", en: "02. Eco Packaging & Shopping Bag" } },
+      { src: "pawsy_3_citylight.jpg", caption: { az: "03. Şəhər İşıqlı Reklam Posteri", tr: "03. Şehir İçi Işıklı Reklam Posteri", en: "03. Citylight Outdoor Poster" } },
+      { src: "pawsy_4_collar.jpg", caption: { az: "04. Məhsul & Aksessuar Brendinqi", tr: "04. Ürün & Aksesuar Markalama", en: "04. Product & Pet Accessory" } },
+      { src: "pawsy_5_storefront.jpg", caption: { az: "05. Mağaza Girişi & Şüşə Brendinqi", tr: "05. Mağaza Girişi & Cam Giydirme", en: "05. Storefront & Window Decal" } }
+    ]
+  },
+  lamie: {
+    key: "lamie",
+    title: "Lamie",
+    author: {
+      az: "Şəbnəm Eminli",
+      tr: "Şəbnəm Eminli",
+      en: "Shabnam Eminli"
+    },
+    slides: [
+      { src: "lamie_1_packaging.jpg", caption: { az: "01. Ətir Şüşəsi, Qutu & Qızılı Dəftərxana", tr: "01. Parfüm Şişesi, Kutu & Altın Varak Kırtasiye", en: "01. Fragrance Bottle, Box & Stationery" } },
+      { src: "lamie_2_bottle.jpg", caption: { az: "02. Kristal Ətir Şüşəsi & Zərif Qızılı Detallar", tr: "02. Kristal Parfüm Şişesi & Zarif Detaylar", en: "02. Fluted Crystal Bottle & Gold Detailing" } },
+      { src: "lamie_3_stationery.jpg", caption: { az: "03. Qırmızı Qutu & Qızıl Həkkolunmuş Zərf", tr: "03. Kırmızı Kutu & Altın Varak Zarf", en: "03. Crimson Rigid Box & Gold Foil Envelope" } }
+    ]
+  }
+};
+
+// --- CAROUSEL SLIDING LOGIC ---
+let currentWorksSlide = 0;
+const totalWorksSlides = 2;
+const worksCarouselTrack = document.getElementById('worksCarouselTrack');
+const worksPrevBtn = document.getElementById('worksPrevBtn');
+const worksNextBtn = document.getElementById('worksNextBtn');
+const worksSlideCounter = document.getElementById('worksSlideCounter');
+const worksDots = document.querySelectorAll('.works-dot');
+
+function goToWorksSlide(index) {
+  if (index < 0) index = 0;
+  if (index >= totalWorksSlides) index = totalWorksSlides - 1;
+  currentWorksSlide = index;
+
+  if (worksCarouselTrack) {
+    worksCarouselTrack.style.transform = `translateX(-${index * 100}%)`;
+  }
+  if (worksSlideCounter) {
+    worksSlideCounter.textContent = `0${index + 1} / 0${totalWorksSlides}`;
+  }
+  worksDots.forEach((dot, idx) => {
+    dot.classList.toggle('is-active', idx === index);
+  });
+}
+
+if (worksPrevBtn) {
+  worksPrevBtn.addEventListener('click', () => {
+    goToWorksSlide((currentWorksSlide - 1 + totalWorksSlides) % totalWorksSlides);
+  });
+}
+
+if (worksNextBtn) {
+  worksNextBtn.addEventListener('click', () => {
+    goToWorksSlide((currentWorksSlide + 1) % totalWorksSlides);
+  });
+}
+
+worksDots.forEach(dot => {
+  dot.addEventListener('click', () => {
+    const sIndex = parseInt(dot.getAttribute('data-slide-index'), 10);
+    goToWorksSlide(sIndex);
+  });
+});
+
+// Touch swipe support for works carousel
+let worksTouchStartX = 0;
+let worksTouchEndX = 0;
+const worksCarouselWrapper = document.querySelector('.works-carousel-wrapper');
+
+if (worksCarouselWrapper) {
+  worksCarouselWrapper.addEventListener('touchstart', (e) => {
+    worksTouchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+
+  worksCarouselWrapper.addEventListener('touchend', (e) => {
+    worksTouchEndX = e.changedTouches[0].screenX;
+    const diff = worksTouchStartX - worksTouchEndX;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) {
+        goToWorksSlide((currentWorksSlide + 1) % totalWorksSlides);
+      } else {
+        goToWorksSlide((currentWorksSlide - 1 + totalWorksSlides) % totalWorksSlides);
+      }
+    }
+  }, { passive: true });
+}
+
+// --- PROJECT GALLERY LIGHTBOX MODAL LOGIC ---
+const projectGalleryModal = document.getElementById('projectGalleryModal');
+const galleryCloseBtn = document.getElementById('galleryCloseBtn');
+const galleryPrevBtn = document.getElementById('galleryPrevBtn');
+const galleryNextBtn = document.getElementById('galleryNextBtn');
+const galleryMainImg = document.getElementById('galleryMainImg');
+const galleryCounterBadge = document.getElementById('galleryCounterBadge');
+const galleryCaptionText = document.getElementById('galleryCaptionText');
+const galleryProjectTitle = document.getElementById('galleryProjectTitle');
+const galleryProjectAuthor = document.getElementById('galleryProjectAuthor');
+const galleryThumbsTrack = document.getElementById('galleryThumbsTrack');
+
+let activeGalleryProjectKey = 'pawsy';
+let currentGallerySlideIndex = 0;
+
+function updateGallerySlide(index) {
+  const proj = studentProjectsData[activeGalleryProjectKey];
+  if (!proj || !proj.slides || !proj.slides.length) return;
+
+  const total = proj.slides.length;
+  if (index < 0) index = total - 1;
+  if (index >= total) index = 0;
+  currentGallerySlideIndex = index;
+
+  const slide = proj.slides[index];
+  const lang = (typeof currentLang !== 'undefined' && currentLang) ? currentLang : 'az';
+
+  if (galleryMainImg) {
+    galleryMainImg.style.opacity = '0';
+    galleryMainImg.style.transform = 'scale(0.98)';
+    setTimeout(() => {
+      galleryMainImg.src = slide.src;
+      galleryMainImg.alt = proj.title;
+      galleryMainImg.style.opacity = '1';
+      galleryMainImg.style.transform = 'scale(1)';
+    }, 120);
+  }
+
+  if (galleryCounterBadge) {
+    galleryCounterBadge.textContent = `${index + 1} / ${total}`;
+  }
+
+  if (galleryCaptionText) {
+    galleryCaptionText.textContent = slide.caption[lang] || slide.caption.az || '';
+  }
+
+  if (galleryThumbsTrack) {
+    const thumbBtns = galleryThumbsTrack.querySelectorAll('.gallery-thumb-btn');
+    thumbBtns.forEach((tb, i) => {
+      tb.classList.toggle('is-active', i === index);
+    });
+  }
+}
+
+function prevGallerySlide() {
+  updateGallerySlide(currentGallerySlideIndex - 1);
+}
+
+function nextGallerySlide() {
+  updateGallerySlide(currentGallerySlideIndex + 1);
+}
+
+function openProjectGallery(projectKey, startIndex = 0) {
+  if (!studentProjectsData[projectKey]) projectKey = 'pawsy';
+  activeGalleryProjectKey = projectKey;
+  const proj = studentProjectsData[projectKey];
+  const lang = (typeof currentLang !== 'undefined' && currentLang) ? currentLang : 'az';
+
+  if (modalOverlay && modalOverlay.classList.contains('is-active')) closeModal();
+  if (mobileDrawer && mobileDrawer.classList.contains('is-open')) toggleDrawer(false);
+  if (mentorModal && mentorModal.classList.contains('is-active')) closeMentorModal();
+  if (regModal && regModal.classList.contains('is-active')) closeRegModal();
+
+  if (galleryProjectTitle) galleryProjectTitle.textContent = proj.title;
+  if (galleryProjectAuthor) {
+    const prefix = (i18nData[lang] && i18nData[lang].authorPrefix) || 'Müəllif:';
+    galleryProjectAuthor.textContent = `${prefix} ${proj.author[lang] || proj.author.az}`;
+  }
+
+  if (galleryThumbsTrack) {
+    galleryThumbsTrack.innerHTML = proj.slides.map((s, idx) => `
+      <button type="button" class="gallery-thumb-btn ${idx === startIndex ? 'is-active' : ''}" data-thumb-index="${idx}" aria-label="Şəkil ${idx + 1}">
+        <img src="${s.src}" alt="${proj.title} ${idx + 1}">
+      </button>
+    `).join('');
+
+    galleryThumbsTrack.querySelectorAll('.gallery-thumb-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.getAttribute('data-thumb-index'), 10);
+        updateGallerySlide(idx);
+      });
+    });
+  }
+
+  updateGallerySlide(startIndex);
+
+  if (projectGalleryModal) {
+    projectGalleryModal.classList.add('is-active');
+    document.body.classList.add('modal-open');
+  }
+}
+
+function closeProjectGallery() {
+  if (projectGalleryModal) {
+    projectGalleryModal.classList.remove('is-active');
+    document.body.classList.remove('modal-open');
+  }
+}
+
+if (galleryPrevBtn) galleryPrevBtn.addEventListener('click', prevGallerySlide);
+if (galleryNextBtn) galleryNextBtn.addEventListener('click', nextGallerySlide);
+if (galleryCloseBtn) galleryCloseBtn.addEventListener('click', closeProjectGallery);
+
+if (projectGalleryModal) {
+  projectGalleryModal.addEventListener('click', (e) => {
+    if (e.target === projectGalleryModal) closeProjectGallery();
+  });
+}
+
+document.querySelectorAll('.open-gallery-btn, .open-gallery-trigger').forEach(el => {
+  el.addEventListener('click', (e) => {
+    e.preventDefault();
+    const key = el.getAttribute('data-project-key') || 'pawsy';
+    openProjectGallery(key, 0);
+  });
+  el.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      const key = el.getAttribute('data-project-key') || 'pawsy';
+      openProjectGallery(key, 0);
+    }
+  });
 });
 
 // =====================================================================
@@ -4645,7 +5600,10 @@ function openRegModal(preselectedCourse) {
     selectCourseOption(preselectedCourse);
   }
 
-  // Close mentor modal, syllabus modal or mobile drawer if open
+  // Close project gallery modal, mentor modal, syllabus modal or mobile drawer if open
+  if (projectGalleryModal && projectGalleryModal.classList.contains('is-active')) {
+    closeProjectGallery();
+  }
   if (mentorModal && mentorModal.classList.contains('is-active')) {
     closeMentorModal();
   }
