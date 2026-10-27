@@ -3612,7 +3612,7 @@ footer a:hover {
         <!-- SLIDE 1: PAWSY -->
         <article class="works-slide is-active" data-project-slide="pawsy">
           <div class="work-card-inner">
-            <div class="work-visual-box open-gallery-trigger" data-project-key="pawsy" role="button" tabindex="0" title="Layihəyə bax">
+            <div class="work-visual-box open-gallery-trigger" data-project-key="pawsy" role="button" tabindex="0" title="Layihəyə bax" onclick="openProjectGallery('pawsy', 0)">
               <img src="pawsy_1_cards.jpg" alt="Pawsy • Pet Shop" class="work-preview-img" loading="lazy">
               <div class="work-visual-overlay">
                 <span class="work-photo-count">
@@ -3648,7 +3648,7 @@ footer a:hover {
               </div>
 
               <div>
-                <button type="button" class="btn go open-gallery-btn" data-project-key="pawsy">
+                <button type="button" class="btn go open-gallery-btn" data-project-key="pawsy" onclick="openProjectGallery('pawsy', 0)">
                   <span data-i18n="btnViewProject">Projeyi İncele</span>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
                 </button>
@@ -3660,7 +3660,7 @@ footer a:hover {
         <!-- SLIDE 2: LAMIE (RED THEMED) -->
         <article class="works-slide theme-red" data-project-slide="lamie">
           <div class="work-card-inner">
-            <div class="work-visual-box open-gallery-trigger" data-project-key="lamie" role="button" tabindex="0" title="Layihəyə bax">
+            <div class="work-visual-box open-gallery-trigger" data-project-key="lamie" role="button" tabindex="0" title="Layihəyə bax" onclick="openProjectGallery('lamie', 0)">
               <img src="lamie_1_croissant.jpg" alt="L'Amie • Boulangerie &amp; Pâtisserie" class="work-preview-img" loading="lazy">
               <div class="work-visual-overlay">
                 <span class="work-photo-count">
@@ -3697,7 +3697,7 @@ footer a:hover {
               </div>
 
               <div>
-                <button type="button" class="btn go btn-red open-gallery-btn" data-project-key="lamie">
+                <button type="button" class="btn go btn-red open-gallery-btn" data-project-key="lamie" onclick="openProjectGallery('lamie', 0)">
                   <span data-i18n="btnViewProject">Projeyi İncele</span>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
                 </button>
@@ -4201,6 +4201,13 @@ footer a:hover {
 if (window.emailjs) {
   emailjs.init({ publicKey: "yEl-IKYypPSNbsLNR" });
 }
+
+// Global state variables (declared early to prevent TDZ ReferenceErrors)
+let currentLang = 'az';
+let activeMentorKey = 'rufat';
+let activeGalleryProjectKey = 'pawsy';
+let currentGallerySlideIndex = 0;
+
 // Multilingual Translation Dictionary (AZ, TR, EN)
 const i18nData = {
   az: {
@@ -4758,7 +4765,7 @@ const syllabusData = {
   }
 };
 
-let currentLang = 'az';
+currentLang = 'az';
 
 // IntersectionObserver for Scroll Animations
 const observer = new IntersectionObserver((entries) => {
@@ -4843,12 +4850,16 @@ function setLanguage(lang) {
     }
   });
 
-  if (typeof activeMentorKey !== 'undefined' && typeof renderMentorModal === 'function') {
-    renderMentorModal(activeMentorKey);
+  // Re-render mentor modal only if currently open
+  const openMentorModalEl = document.getElementById('mentorModal');
+  if (openMentorModalEl && openMentorModalEl.classList.contains('is-active') && typeof renderMentorModal === 'function') {
+    renderMentorModal(activeMentorKey || 'rufat');
   }
 
-  if (typeof activeGalleryProjectKey !== 'undefined' && typeof updateGallerySlide === 'function' && projectGalleryModal && projectGalleryModal.classList.contains('is-active')) {
-    updateGallerySlide(currentGallerySlideIndex);
+  // Re-render gallery slide only if currently open
+  const openGalleryModalEl = document.getElementById('projectGalleryModal');
+  if (openGalleryModalEl && openGalleryModalEl.classList.contains('is-active') && typeof updateGallerySlide === 'function') {
+    updateGallerySlide(typeof currentGallerySlideIndex !== 'undefined' ? currentGallerySlideIndex : 0);
   }
 }
 
@@ -5104,8 +5115,8 @@ const galleryProjectTitle = document.getElementById('galleryProjectTitle');
 const galleryProjectAuthor = document.getElementById('galleryProjectAuthor');
 const galleryThumbsTrack = document.getElementById('galleryThumbsTrack');
 
-let activeGalleryProjectKey = 'pawsy';
-let currentGallerySlideIndex = 0;
+activeGalleryProjectKey = 'pawsy';
+currentGallerySlideIndex = 0;
 
 function updateGallerySlide(index) {
   const proj = studentProjectsData[activeGalleryProjectKey];
@@ -5155,15 +5166,23 @@ function nextGallerySlide() {
 }
 
 function openProjectGallery(projectKey, startIndex = 0) {
-  if (!studentProjectsData[projectKey]) projectKey = 'pawsy';
+  if (!studentProjectsData || !studentProjectsData[projectKey]) projectKey = 'pawsy';
   activeGalleryProjectKey = projectKey;
   const proj = studentProjectsData[projectKey];
+  if (!proj) return;
   const lang = (typeof currentLang !== 'undefined' && currentLang) ? currentLang : 'az';
 
-  if (modalOverlay && modalOverlay.classList.contains('is-active')) closeModal();
-  if (mobileDrawer && mobileDrawer.classList.contains('is-open')) toggleDrawer(false);
-  if (mentorModal && mentorModal.classList.contains('is-active')) closeMentorModal();
-  if (regModal && regModal.classList.contains('is-active')) closeRegModal();
+  const sModal = document.getElementById('syllabusModal');
+  if (sModal && sModal.classList.contains('is-active') && typeof closeModal === 'function') closeModal();
+
+  const mDrawer = document.getElementById('mobileDrawer');
+  if (mDrawer && mDrawer.classList.contains('is-open') && typeof toggleDrawer === 'function') toggleDrawer(false);
+
+  const mModal = document.getElementById('mentorModal');
+  if (mModal && mModal.classList.contains('is-active') && typeof closeMentorModal === 'function') closeMentorModal();
+
+  const rModal = document.getElementById('regModal');
+  if (rModal && rModal.classList.contains('is-active') && typeof closeRegModal === 'function') closeRegModal();
 
   if (galleryProjectTitle) galleryProjectTitle.textContent = proj.title;
   if (galleryProjectAuthor) {
@@ -5188,18 +5207,24 @@ function openProjectGallery(projectKey, startIndex = 0) {
 
   updateGallerySlide(startIndex);
 
-  if (projectGalleryModal) {
-    projectGalleryModal.classList.add('is-active');
+  const pModal = projectGalleryModal || document.getElementById('projectGalleryModal');
+  if (pModal) {
+    pModal.classList.add('is-active');
     document.body.classList.add('modal-open');
   }
 }
 
 function closeProjectGallery() {
-  if (projectGalleryModal) {
-    projectGalleryModal.classList.remove('is-active');
+  const pModal = projectGalleryModal || document.getElementById('projectGalleryModal');
+  if (pModal) {
+    pModal.classList.remove('is-active');
     document.body.classList.remove('modal-open');
   }
 }
+
+// Global exposure for inline onclick attributes
+window.openProjectGallery = openProjectGallery;
+window.closeProjectGallery = closeProjectGallery;
 
 if (galleryPrevBtn) galleryPrevBtn.addEventListener('click', prevGallerySlide);
 if (galleryNextBtn) galleryNextBtn.addEventListener('click', nextGallerySlide);
@@ -5211,6 +5236,7 @@ if (projectGalleryModal) {
   });
 }
 
+// Direct button and trigger element listeners
 document.querySelectorAll('.open-gallery-btn, .open-gallery-trigger').forEach(el => {
   el.addEventListener('click', (e) => {
     e.preventDefault();
@@ -5224,6 +5250,16 @@ document.querySelectorAll('.open-gallery-btn, .open-gallery-trigger').forEach(el
       openProjectGallery(key, 0);
     }
   });
+});
+
+// Delegated click handler on document to guarantee clicks on child elements (spans, svgs, etc.) always fire
+document.addEventListener('click', (e) => {
+  const trigger = e.target.closest && e.target.closest('.open-gallery-btn, .open-gallery-trigger');
+  if (trigger) {
+    e.preventDefault();
+    const key = trigger.getAttribute('data-project-key') || 'pawsy';
+    openProjectGallery(key, 0);
+  }
 });
 
 // =====================================================================
@@ -5346,7 +5382,7 @@ const mentorsData = {
   }
 };
 
-let activeMentorKey = 'rufat';
+activeMentorKey = 'rufat';
 const mentorModal = document.getElementById('mentorModal');
 const mentorModalBody = document.getElementById('mentorModalBody');
 const mentorModalCloseBtn = document.getElementById('mentorModalCloseBtn');
@@ -5509,6 +5545,19 @@ mentorCards.forEach(card => {
   card.addEventListener('mouseleave', () => {
     if (hoverTimer) clearTimeout(hoverTimer);
   });
+});
+
+window.openMentorModal = openMentorModal;
+window.closeMentorModal = closeMentorModal;
+
+// Delegated click handler for mentor cards to ensure clicks on photos or text trigger modal
+document.addEventListener('click', (e) => {
+  const card = e.target.closest && e.target.closest('.mentor-grid-card');
+  if (card) {
+    e.preventDefault();
+    const mentorKey = card.getAttribute('data-mentor');
+    if (mentorKey) openMentorModal(mentorKey);
+  }
 });
 
 // Custom 3-Step Animated Registration Wizard & Mail Bot Integration
