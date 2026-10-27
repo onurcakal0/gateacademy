@@ -34,7 +34,7 @@ def load_env():
         "SMTP_USER": "",
         "SMTP_PASS": "",
         "SENDER_NAME": "Gate Academy",
-        "ADMIN_EMAIL": "contact.gateacademy@gmail.com",
+        "ADMIN_EMAIL": "hello@gateacademy.study",
         "PORT": "3000",
     }
     if os.path.exists(ENV_PATH):
@@ -268,7 +268,7 @@ def build_email_html(record):
           <tr>
             <td style="background-color:#EEF1F9;padding:22px 32px;text-align:center;border-top:1px solid rgba(11,27,94,0.08);">
               <p style="margin:0 0 6px;font-size:13.5px;font-weight:800;color:#0B1B5E;">
-                +994 51 448 68 20 &nbsp;&bull;&nbsp; contact.gateacademy@gmail.com
+                +994 51 448 68 20 &nbsp;&bull;&nbsp; hello@gateacademy.study
               </p>
               <p style="margin:0;font-size:12px;color:#52608F;font-weight:600;">
                 {t["footer"]}
@@ -339,7 +339,7 @@ def send_registration_emails(record):
     smtp_host = env.get("SMTP_HOST", "smtp.gmail.com").strip()
     smtp_port = int(env.get("SMTP_PORT", "587") or 587)
     sender_name = env.get("SENDER_NAME", "Gate Academy")
-    admin_email = env.get("ADMIN_EMAIL", "contact.gateacademy@gmail.com").strip()
+    admin_email = env.get("ADMIN_EMAIL", "hello@gateacademy.study").strip()
 
     if not smtp_user or not smtp_pass:
         return {
