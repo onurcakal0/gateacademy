@@ -1628,6 +1628,7 @@ section {
 }
 
 .gallery-modal-top {
+  flex-shrink: 0;
   padding: 20px 28px 18px;
 }
 
@@ -1646,6 +1647,7 @@ section {
   padding: 20px 28px;
   overflow-y: auto;
   flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -1779,6 +1781,7 @@ section {
 }
 
 .gallery-modal-footer {
+  flex-shrink: 0;
   padding: 16px 28px 20px;
   border-top: 1px solid var(--border);
   display: flex;
@@ -2153,49 +2156,105 @@ section {
    MENTOR DETAIL MODAL WINDOW
    ===================================================================== */
 .mentor-modal-card {
-  max-width: 720px;
+  max-width: 740px;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
 }
 
-.mentor-modal-tabs {
+.mentor-modal-top {
+  flex-shrink: 0;
+  padding: 22px 28px 20px;
+  background: var(--blue);
+  background-image:
+    linear-gradient(rgba(255, 255, 255, .08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, .08) 1px, transparent 1px);
+  background-size: 32px 32px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   display: flex;
-  gap: 8px;
-  margin-top: 14px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-  scrollbar-width: none;
+  flex-direction: column;
+  gap: 16px;
 }
-.mentor-modal-tabs::-webkit-scrollbar { display: none; }
+
+.mentor-modal-top .reg-top-row {
+  margin-bottom: 0;
+}
+
+.mentor-modal-tabs-wrap {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.mentor-modal-tabs-wrap::-webkit-scrollbar { display: none; }
+
+.mentor-modal-tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(6, 17, 60, 0.65);
+  padding: 5px;
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  max-width: 100%;
+}
 
 .mentor-tab-btn {
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
+  background: transparent;
+  border: 1px solid transparent;
+  color: rgba(255, 255, 255, 0.85);
   font-size: 13px;
-  font-weight: 800;
-  padding: 6px 14px;
+  font-weight: 700;
+  padding: 7px 16px;
   border-radius: 100px;
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.25s ease;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
 }
 
 .mentor-tab-btn:hover {
-  background: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
 }
 
 .mentor-tab-btn.is-active {
   background: var(--green);
   color: var(--navy);
   border-color: var(--green);
+  font-weight: 900;
+  box-shadow: 0 4px 16px rgba(43, 255, 57, 0.4);
+}
+
+.tab-role-tag {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  padding: 2px 7px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  transition: all 0.2s ease;
+}
+
+.mentor-tab-btn.is-active .tab-role-tag {
+  background: var(--navy);
+  color: var(--green);
 }
 
 .mentor-modal-body {
-  padding: 24px 28px;
+  padding: 26px 28px;
   overflow-y: auto;
   flex: 1;
+  min-height: 0;
+  -webkit-overflow-scrolling: touch;
 }
 
 .mentor-modal-hero {
@@ -2371,6 +2430,7 @@ section {
 }
 
 .mentor-modal-footer {
+  flex-shrink: 0;
   padding: 16px 28px 22px;
   border-top: 1px solid var(--border);
   display: flex;
@@ -2605,6 +2665,22 @@ footer a:hover {
   }
 }
 
+@media (max-width: 640px) {
+  .mentor-modal-top {
+    padding: 18px 18px 16px;
+    gap: 12px;
+  }
+  .mentor-tab-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+    gap: 6px;
+  }
+  .tab-role-tag {
+    font-size: 9px;
+    padding: 1px 5px;
+  }
+}
+
 @media (max-width: 860px) {
   .pills {
     display: none;
@@ -2770,6 +2846,7 @@ footer a:hover {
   padding: 22px 28px 20px;
   position: relative;
   overflow: hidden;
+  flex-shrink: 0;
   background-image:
     linear-gradient(rgba(255, 255, 255, .07) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, .07) 1px, transparent 1px);
@@ -4115,7 +4192,7 @@ footer a:hover {
 <!-- ================= INTERACTIVE MENTOR PROFILE MODAL ================= -->
 <div class="reg-modal-overlay" id="mentorModal" role="dialog" aria-modal="true" aria-labelledby="mentorModalName">
   <div class="reg-modal-card mentor-modal-card">
-    <div class="reg-modal-top">
+    <div class="reg-modal-top mentor-modal-top">
       <div class="reg-top-row">
         <span class="reg-brand-pill">
           <span class="pulse-dot"></span>
@@ -4124,10 +4201,21 @@ footer a:hover {
         <button type="button" class="reg-close-btn" id="mentorModalCloseBtn" aria-label="Bağla">&times;</button>
       </div>
 
-      <div class="mentor-modal-tabs" role="tablist" aria-label="Mentor Seçimi">
-        <button type="button" class="mentor-tab-btn is-active" data-tab-mentor="rufat">Rüfət Qədirli</button>
-        <button type="button" class="mentor-tab-btn" data-tab-mentor="sema">Səma Məsimli</button>
-        <button type="button" class="mentor-tab-btn" data-tab-mentor="nicat">Nicat Mehdi</button>
+      <div class="mentor-modal-tabs-wrap">
+        <div class="mentor-modal-tabs" role="tablist" aria-label="Mentor Seçimi">
+          <button type="button" class="mentor-tab-btn is-active" data-tab-mentor="rufat">
+            <span>Rüfət Qədirli</span>
+            <small class="tab-role-tag">UI/UX</small>
+          </button>
+          <button type="button" class="mentor-tab-btn" data-tab-mentor="sema">
+            <span>Səma Məsimli</span>
+            <small class="tab-role-tag">Qrafik</small>
+          </button>
+          <button type="button" class="mentor-tab-btn" data-tab-mentor="nicat">
+            <span>Nicat Mehdi</span>
+            <small class="tab-role-tag">Motion</small>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -5557,6 +5645,13 @@ document.addEventListener('click', (e) => {
     e.preventDefault();
     const mentorKey = card.getAttribute('data-mentor');
     if (mentorKey) openMentorModal(mentorKey);
+  }
+
+  const tab = e.target.closest && e.target.closest('.mentor-tab-btn');
+  if (tab) {
+    e.preventDefault();
+    const key = tab.getAttribute('data-tab-mentor');
+    if (key) renderMentorModal(key);
   }
 });
 
