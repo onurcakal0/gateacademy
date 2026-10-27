@@ -74,6 +74,8 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 24px;
   background: var(--navy);
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 body {
@@ -2633,6 +2635,8 @@ footer a:hover {
 /* =====================================================================
    RESPONSIVE DESIGN (MEDIA QUERIES)
    ===================================================================== */
+
+/* Tablet & Medium Screens (<= 1024px) */
 @media (max-width: 1024px) {
   .ai-pipeline {
     grid-template-columns: repeat(2, 1fr);
@@ -2645,48 +2649,16 @@ footer a:hover {
   }
 }
 
-@media (max-width: 720px) {
-  .mentors-grid {
-    grid-template-columns: 1fr;
-    max-width: 420px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .mentor-modal-hero {
-    flex-direction: column;
-    text-align: center;
-  }
-  .mentor-modal-footer {
-    flex-direction: column;
-  }
-  .mentor-modal-footer .btn {
-    width: 100%;
-    text-align: center;
-  }
-}
-
-@media (max-width: 640px) {
-  .mentor-modal-top {
-    padding: 18px 18px 16px;
-    gap: 12px;
-  }
-  .mentor-tab-btn {
-    padding: 6px 12px;
-    font-size: 12px;
-    gap: 6px;
-  }
-  .tab-role-tag {
-    font-size: 9px;
-    padding: 1px 5px;
-  }
-}
-
+/* Tablet & Mobile Breakpoint (<= 860px) */
 @media (max-width: 860px) {
   .pills {
-    display: none;
+    display: none !important;
   }
   .hamburger {
-    display: flex;
+    display: flex !important;
+  }
+  .nav-actions .btn.ghost {
+    display: none !important;
   }
   .courses, .stats, .portfolio-grid {
     grid-template-columns: 1fr;
@@ -2698,11 +2670,11 @@ footer a:hover {
     display: none;
   }
   .hero {
-    padding: 20px 20px 110px;
-    border-radius: 30px;
+    padding: 20px 18px 100px;
+    border-radius: 28px;
   }
   .hero-in {
-    margin-top: 32px;
+    margin-top: 28px;
   }
   .hero-top-badge {
     flex-wrap: wrap;
@@ -2718,67 +2690,39 @@ footer a:hover {
     margin-top: 0 !important;
     rotate: 0deg !important;
   }
-  .cards::before, .cards::after {
-    content: "";
-    position: absolute;
-    border-radius: 50%;
-    z-index: 0;
-  }
   .cards::before {
     width: 150px;
     height: 150px;
     left: -24px;
     top: 10%;
-    background: var(--green);
   }
   .cards::after {
     width: 130px;
     height: 130px;
     right: -20px;
     top: 55%;
-    background: var(--yellow);
   }
   .badge {
     position: relative;
     right: auto;
     bottom: auto;
-    width: 130px;
-    margin: 24px auto 0;
+    width: 120px;
+    margin: 20px auto 0;
   }
   .sheet {
-    border-radius: 30px;
-    padding: 24px 20px;
+    border-radius: 28px;
+    padding: 24px 18px;
   }
   .work {
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: 28px;
-  margin-top: 32px;
-  align-items: center;
-}
-.work h3 {
-  font-size: clamp(24px, 3vw, 38px);
-  line-height: 1;
-  color: var(--text);
-}
-.work p {
-  font-size: 17px;
-  max-width: 40ch;
-  color: var(--text-muted);
-  margin: 12px 0 16px;
-}
-
-.shot {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-top: 24px;
+  }
+  .shot {
     min-height: 220px;
   }
   .ai-pipeline {
     grid-template-columns: 1fr;
-  }
-  .modal-card {
-    border-radius: 28px;
-  }
-  .modal-header, .modal-body, .modal-footer {
-    padding: 20px;
   }
   footer {
     flex-direction: column;
@@ -2788,6 +2732,312 @@ footer a:hover {
   .footer-right {
     align-items: center;
     text-align: center;
+  }
+}
+
+/* Mobile Devices & Popups / Modals (<= 720px) */
+@media (max-width: 720px) {
+  /* Global Modal Overlays */
+  .modal-overlay,
+  .reg-modal-overlay {
+    padding: 12px 10px !important;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  /* All Modal Cards */
+  .modal-card,
+  .gallery-modal-card,
+  .mentor-modal-card,
+  .reg-modal-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 24px !important;
+    max-height: 92vh !important;
+    margin: 0 auto !important;
+  }
+
+  /* All Modal Footers - STACK BUTTONS ON MOBILE */
+  .modal-footer,
+  .gallery-modal-footer,
+  .mentor-modal-footer {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 14px 18px 18px !important;
+    gap: 10px !important;
+  }
+  .modal-footer .btn,
+  .gallery-modal-footer .btn,
+  .mentor-modal-footer .btn {
+    width: 100% !important;
+    text-align: center !important;
+    justify-content: center !important;
+    padding: 13px 18px !important;
+    font-size: 14px !important;
+    margin: 0 !important;
+    box-sizing: border-box;
+  }
+
+  /* 1. SYLLABUS MODAL REFINEMENTS */
+  .modal-header {
+    padding: 16px 18px;
+    gap: 12px;
+  }
+  .modal-header h3 {
+    font-size: 18px;
+    line-height: 1.25;
+  }
+  .modal-meta {
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .modal-meta span {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+  .modal-body {
+    padding: 16px 18px;
+  }
+  .module-box {
+    padding: 14px 16px;
+  }
+
+  /* 2. PROJECT GALLERY MODAL REFINEMENTS */
+  .gallery-modal-top {
+    padding: 16px 18px 12px;
+  }
+  .gallery-header-meta h3 {
+    font-size: 18px !important;
+  }
+  .gallery-header-meta p {
+    font-size: 12px !important;
+  }
+  .gallery-modal-body {
+    padding: 14px 16px;
+    gap: 12px;
+  }
+  .gallery-stage-wrap {
+    min-height: 200px;
+    max-height: 300px;
+    border-radius: 16px;
+  }
+  .gallery-active-image {
+    max-height: 280px;
+  }
+  .gallery-arrow-nav {
+    width: 36px;
+    height: 36px;
+  }
+  .gallery-arrow-nav svg {
+    width: 18px;
+    height: 18px;
+  }
+  .gallery-arrow-nav.prev {
+    left: 8px;
+  }
+  .gallery-arrow-nav.next {
+    right: 8px;
+  }
+  .gallery-caption-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .gallery-caption-text {
+    font-size: 12px;
+    text-align: center;
+  }
+  .gallery-thumbs-track {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    justify-content: center;
+    -webkit-overflow-scrolling: touch;
+  }
+  .gallery-thumb-btn {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+  }
+
+  /* 3. MENTOR MODAL REFINEMENTS */
+  .mentors-grid {
+    grid-template-columns: 1fr;
+    max-width: 380px;
+    margin: 0 auto;
+    gap: 16px;
+  }
+  .mentor-modal-top {
+    padding: 16px 18px 14px;
+    gap: 12px;
+  }
+  .mentor-modal-tabs-wrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .mentor-tab-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+    gap: 6px;
+  }
+  .tab-role-tag {
+    font-size: 9px;
+    padding: 1px 5px;
+  }
+  .mentor-modal-body {
+    padding: 18px 18px;
+    gap: 14px;
+  }
+  .mentor-modal-hero {
+    flex-direction: column;
+    text-align: center;
+    gap: 14px;
+  }
+  .mentor-modal-avatar {
+    width: 86px;
+    height: 86px;
+    margin: 0 auto;
+  }
+  .mentor-modal-intro h3 {
+    font-size: 20px;
+  }
+  .mentor-modal-quote {
+    font-size: 13px;
+    padding: 12px 14px;
+  }
+  .mentor-modal-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .mentor-modal-stat-card {
+    padding: 10px 12px;
+  }
+  .mentor-modal-stat-card strong {
+    font-size: 18px;
+  }
+  .mentor-modal-tools-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  /* 4. REGISTRATION WIZARD MODAL REFINEMENTS */
+  .reg-modal-top {
+    padding: 16px 18px 14px;
+  }
+  .reg-wizard-body {
+    padding: 18px 18px 22px;
+  }
+  .reg-q-title {
+    font-size: 18px;
+    line-height: 1.25;
+  }
+  .reg-q-subtitle {
+    font-size: 13px;
+  }
+  .reg-courses-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .reg-course-radio {
+    padding: 10px 14px;
+  }
+  .reg-formats-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .reg-actions {
+    flex-direction: column-reverse !important;
+    gap: 10px !important;
+    margin-top: 14px !important;
+    padding-top: 14px !important;
+  }
+  .reg-btn {
+    width: 100% !important;
+    text-align: center !important;
+    justify-content: center !important;
+    padding: 13px 18px !important;
+    font-size: 14px !important;
+    box-sizing: border-box;
+  }
+}
+
+/* Compact Smartphones (<= 480px) */
+@media (max-width: 480px) {
+  .nav {
+    padding: 10px 14px;
+  }
+  .nav-logo img {
+    height: 32px;
+    max-width: 130px;
+  }
+  .nav-actions {
+    gap: 6px;
+  }
+  .lang-switch {
+    padding: 2px 3px;
+    gap: 2px;
+  }
+  .lang-btn {
+    padding: 3px 6px;
+    font-size: 11px;
+  }
+  .theme-btn {
+    width: 32px;
+    height: 32px;
+  }
+  .theme-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+  .hamburger {
+    width: 38px;
+    height: 38px;
+    padding: 8px;
+  }
+  .hero {
+    padding: 16px 12px 70px;
+    border-radius: 22px;
+  }
+  .hero h1 {
+    font-size: clamp(34px, 11vw, 52px);
+    line-height: 1.05;
+  }
+  .hero-top-badge {
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+  .hero-software-icons .ad-badge {
+    width: 22px;
+    height: 22px;
+    font-size: 10px;
+  }
+  .card {
+    padding: 20px 16px;
+  }
+  .works-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .works-nav-controls {
+    align-self: flex-end;
+  }
+  .work-visual-box {
+    min-height: 220px;
+  }
+  .work-photo-count {
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+  .work-zoom-pill {
+    padding: 5px 12px;
+    font-size: 11px;
+  }
+  .course-pill {
+    padding: 6px 14px;
+    font-size: 13px;
   }
 }
 
