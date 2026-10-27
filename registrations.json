@@ -1,0 +1,74 @@
+[
+  {
+    "id": "9927F4F0",
+    "created_at": "2026-10-25 01:47:54",
+    "name": "Mustafa Onur",
+    "phone": "+90 5456954583",
+    "email": "musonur2007@gmail.com",
+    "course": "uiux",
+    "course_title": "UI/UX Tasarım",
+    "lang": "tr",
+    "mail_status": "smtp",
+    "preview_url": "/sent_emails/email_9927F4F0.html"
+  },
+  {
+    "id": "D23BD0AB",
+    "created_at": "2026-10-24 22:08:56",
+    "name": "Mustafa Onur",
+    "phone": "+90 5456954583",
+    "email": "musonur2007@gmail.com",
+    "course": "qrafik",
+    "course_title": "Qrafik Dizayn",
+    "lang": "az",
+    "mail_status": "smtp",
+    "preview_url": "/sent_emails/email_D23BD0AB.html"
+  },
+  {
+    "id": "724E2C9C",
+    "created_at": "2026-10-24 22:04:03",
+    "name": "Mustafa Onur",
+    "phone": "+90 5456954583",
+    "email": "musonur2007@gmail.com",
+    "course": "qrafik",
+    "course_title": "Qrafik Dizayn",
+    "lang": "az",
+    "mail_status": "smtp",
+    "preview_url": "/sent_emails/email_724E2C9C.html"
+  },
+  {
+    "id": "34DC2E89",
+    "created_at": "2026-10-24 21:42:35",
+    "name": "Mustafa Onur",
+    "phone": "+90 5456954583",
+    "email": "musonur2007@gmail.com",
+    "course": "qrafik",
+    "course_title": "Grafik Tasarım",
+    "lang": "tr",
+    "mail_status": "preview",
+    "preview_url": "/sent_emails/email_34DC2E89.html"
+  },
+  {
+    "id": "E5CE87DF",
+    "created_at": "2026-10-24 21:38:16",
+    "name": "onur cakal",
+    "phone": "+90 5456954583",
+    "email": "musonur2007@gmail.com",
+    "course": "qrafik",
+    "course_title": "Grafik Tasarım",
+    "lang": "tr",
+    "mail_status": "preview",
+    "preview_url": "/sent_emails/email_E5CE87DF.html"
+  },
+  {
+    "id": "C7ACDE52",
+    "created_at": "2026-10-24 21:37:09",
+    "name": "onur cakal",
+    "phone": "+90 5456954583",
+    "email": "musonur2007@gmail.com",
+    "course": "qrafik",
+    "course_title": "Qrafik Dizayn",
+    "lang": "az",
+    "mail_status": "preview",
+    "preview_url": "/sent_emails/email_C7ACDE52.html"
+  }
+]
