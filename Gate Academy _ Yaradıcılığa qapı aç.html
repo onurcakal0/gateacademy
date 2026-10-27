@@ -4062,7 +4062,7 @@ function createFallbackEmailBlobUrl(payload, courseTitle) {
   return URL.createObjectURL(blob);
 }
 
-// Submit Step 3 -> Send to Formspree Endpoint
+// Submit Step 3 -> Send via EmailJS (and backup to Formspree)
 regWizardForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   if (currentWizardStep !== 3) return;
@@ -4088,22 +4088,40 @@ regWizardForm.addEventListener('submit', async (e) => {
   const sendingLabel = currentLang === 'tr' ? 'Gönderiliyor...' : (currentLang === 'en' ? 'Submitting...' : 'Göndərilir...');
   regSubmitBtn.innerHTML = `<span>${sendingLabel}</span> ⏳`;
 
+  // Secondary backup logging to Formspree in background
   try {
-    const res = await fetch('https://formspree.io/f/mljjbbzr', {
+    fetch('https://formspree.io/f/mljjbbzr', {
       method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
       body: JSON.stringify({
         Ad_Soyad: payload.name,
         Telefon: payload.phone,
         Email: payload.email,
         Secilen_Kurs: courseTitle,
-        Kurs_Kodu: payload.course,
         Dil: payload.lang,
         _replyto: payload.email,
         _subject: `Gate Academy Qeydiyyat: ${payload.name} (${courseTitle})`
+      })
+    }).catch(() => {});
+  } catch (_) {}
+
+  try {
+    const res = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        service_id: 'service_g1hn99e',
+        template_id: 'template_k9g14z6',
+        user_id: 'yEl-IKYypPSNbsLNR',
+        template_params: {
+          name: payload.name,
+          phone: payload.phone,
+          email: payload.email,
+          course: courseTitle,
+          lang: currentLang.toUpperCase()
+        }
       })
     });
 
@@ -4120,14 +4138,14 @@ regWizardForm.addEventListener('submit', async (e) => {
 
     if (res.ok) {
       if (currentLang === 'tr') {
-        botMsgEl.textContent = `✅ Başvurunuz kaydedildi! Onay e-postası hazırlandı.`;
+        botMsgEl.textContent = `✅ Başvurunuz alındı! Onay e-postası ${payload.email} adresine gönderildi.`;
       } else if (currentLang === 'en') {
-        botMsgEl.textContent = `✅ Your application has been registered successfully!`;
+        botMsgEl.textContent = `✅ Application received! Confirmation email sent to ${payload.email}.`;
       } else {
-        botMsgEl.textContent = `✅ Müraciətiniz qeydə alındı! Təsdiq e-poçtu hazırlandı.`;
+        botMsgEl.textContent = `✅ Müraciətiniz qeydə alındı! Təsdiq e-poçtu ${payload.email} ünvanına göndərildi.`;
       }
     } else {
-      botMsgEl.textContent = `📩 Müraciətiniz qeydə alındı (Önizləmə aktivdir).`;
+      botMsgEl.textContent = `📩 Müraciətiniz qeydə alındı!`;
     }
 
     setWizardStep(4);
