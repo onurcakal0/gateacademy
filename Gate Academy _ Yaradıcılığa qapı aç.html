@@ -3096,8 +3096,12 @@ footer a:hover {
   </div>
 </div>
 
-<!-- ================= VANILLA JAVASCRIPT & I18N ENGINE ================= -->
+<!-- ================= EMAILJS SDK & VANILLA JS ENGINE ================= -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
+if (window.emailjs) {
+  emailjs.init({ publicKey: "yEl-IKYypPSNbsLNR" });
+}
 // Multilingual Translation Dictionary (AZ, TR, EN)
 const i18nData = {
   az: {
@@ -4105,25 +4109,32 @@ regWizardForm.addEventListener('submit', async (e) => {
     }).catch(() => {});
   } catch (_) {}
 
+  const templateParams = {
+    name: payload.name,
+    phone: payload.phone,
+    email: payload.email,
+    course: courseTitle,
+    lang: currentLang.toUpperCase()
+  };
+
   try {
-    const res = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        service_id: 'service_g1hn99e',
-        template_id: 'template_k9g14z6',
-        user_id: 'yEl-IKYypPSNbsLNR',
-        template_params: {
-          name: payload.name,
-          phone: payload.phone,
-          email: payload.email,
-          course: courseTitle,
-          lang: currentLang.toUpperCase()
-        }
-      })
-    });
+    let isSuccess = false;
+    if (window.emailjs && typeof window.emailjs.send === 'function') {
+      const eRes = await window.emailjs.send('service_g1hn99e', 'template_k9g14z6', templateParams);
+      isSuccess = (eRes && (eRes.status === 200 || eRes.text === 'OK'));
+    } else {
+      const res = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          service_id: 'service_g1hn99e',
+          template_id: 'template_k9g14z6',
+          user_id: 'yEl-IKYypPSNbsLNR',
+          template_params: templateParams
+        })
+      });
+      isSuccess = res.ok;
+    }
 
     document.getElementById('sumNameVal').textContent = payload.name;
     document.getElementById('sumPhoneVal').textContent = payload.phone;
@@ -4136,7 +4147,7 @@ regWizardForm.addEventListener('submit', async (e) => {
     viewEmailBtn.href = createFallbackEmailBlobUrl(payload, courseTitle);
     viewEmailBtn.style.display = 'inline-flex';
 
-    if (res.ok) {
+    if (isSuccess) {
       if (currentLang === 'tr') {
         botMsgEl.textContent = `✅ Başvurunuz alındı! Onay e-postası ${payload.email} adresine gönderildi.`;
       } else if (currentLang === 'en') {
